@@ -11,12 +11,20 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 dependencies {
   // Not sure yet if I need api dependency here
-  implementation 'org.seleniumhq.selenium:selenium-java:3.141.59'
+  api 'org.seleniumhq.selenium:selenium-java:4.0.0-alpha-3'
 
   testImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.2'
+  testImplementation 'org.assertj:assertj-core:3.14.0'
+  testImplementation 'io.undertow:undertow-core:2.0.27.Final'
   testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.4.2'
 }
 
 test {
   useJUnitPlatform()
+  systemProperties = [
+    'junit.jupiter.execution.parallel.enabled': true,
+    'junit.jupiter.execution.parallel.mode.default': 'concurrent',
+    'junit.jupiter.execution.parallel.config.strategy': 'fixed',
+    'junit.jupiter.execution.parallel.config.fixed.parallelism': 1
+  ]
 }
