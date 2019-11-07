@@ -2,7 +2,6 @@ package ru.stqa.lenium;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import ru.stqa.trier.LimitExceededException;
 import ru.stqa.trier.TimeBasedTrier;
 
 import java.util.function.Supplier;
@@ -21,8 +20,8 @@ public class Element {
     @Override
     public WebElement get() {
       try {
-        return new TimeBasedTrier<WebElement>(5000).tryTo(() -> context.getElementBy(locator));
-      } catch (LimitExceededException | InterruptedException e) {
+        return new TimeBasedTrier<WebElement>(60000).tryTo(() -> context.getElementBy(locator));
+      } catch (Throwable e) {
         e.printStackTrace();
         throw new RuntimeException(e);
       }
@@ -46,11 +45,11 @@ public class Element {
   }
 
   public void clear() {
-    new ElementCommand<Void>(new WebElementSupplier(), WebElement::clear).get();
+    new VoidElementCommand(new WebElementSupplier(), WebElement::clear).run();
   }
 
   public void click() {
-    new ElementCommand<Void>(new WebElementSupplier(), WebElement::click).get();
+    new VoidElementCommand(new WebElementSupplier(), WebElement::click).run();
   }
 
   public void sendKeys(String text) {

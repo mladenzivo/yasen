@@ -24,4 +24,23 @@ class ClickTest extends TestBase {
     // assert
     assertThat(mainWin.title()).isEqualTo("target");
   }
+
+  @Test
+  void canClickElementThatIsNotImmediatelyVisible() {
+    // arrange
+    String target = env.createPage("target", "<p>Hello, world!</p>");
+    String url = env.createPage("source",
+      "$(document).ready(function() { "
+        + "window.setTimeout(function() {"
+        + "$(\"a\").show()"
+        + "}, 1000);"
+        + "});",
+      String.format("<p><a style='display:none' href='%s'>click</a></p>", target));
+
+    // act
+    mainWin.open(url).$("a").click();
+
+    // assert
+    assertThat(mainWin.title()).isEqualTo("target");
+  }
 }

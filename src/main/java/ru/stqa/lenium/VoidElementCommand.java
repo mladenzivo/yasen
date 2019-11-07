@@ -3,23 +3,23 @@ package ru.stqa.lenium;
 import org.openqa.selenium.WebElement;
 import ru.stqa.trier.TimeBasedTrier;
 
-import java.util.function.Function;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-class ElementCommand<R> implements Supplier<R> {
+class VoidElementCommand implements Runnable {
 
   private Supplier<WebElement> elementSupplier;
-  private Function<WebElement, R> command;
+  private Consumer<WebElement> command;
 
-  ElementCommand(Supplier<WebElement> elementSupplier, Function<WebElement, R> command) {
+  VoidElementCommand(Supplier<WebElement> elementSupplier, Consumer<WebElement> command) {
     this.elementSupplier = elementSupplier;
     this.command = command;
   }
 
   @Override
-  public R get() {
+  public void run() {
     try {
-      return new TimeBasedTrier<R>(60000).tryTo(() -> command.apply(elementSupplier.get()));
+      new TimeBasedTrier(60000).tryTo(() -> command.accept(elementSupplier.get()));
     } catch (Throwable e) {
       e.printStackTrace();
       throw new RuntimeException(e);
