@@ -8,10 +8,14 @@ public class NavigationTest extends TestBase {
 
   @Test
   void canOpenPage() {
+    // arrange
     String url = env.createPage("canOpenPage", "<p>Hello, world!</p>");
-    Window win = browser.currentWindow();
-    win.open(url);
-    assertThat(win.title()).isEqualTo("canOpenPage");
+
+    // act
+    mainWin.open(url);
+
+    // assert
+    assertThat(mainWin.title()).isEqualTo("canOpenPage");
   }
 
 }

@@ -9,11 +9,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class WindowsTest extends TestBase {
 
-  private Window mainWin;
-
   @BeforeEach
   void checkPreconditions() {
-    mainWin = browser.currentWindow();
     assertThat(browser.windows()).hasSize(1);
   }
 

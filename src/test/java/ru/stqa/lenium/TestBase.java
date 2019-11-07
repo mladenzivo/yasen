@@ -7,15 +7,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 class TestBase {
   TestEnvironment env;
   Browser browser;
+  Window mainWin;
 
   @BeforeEach
   void initFixture(Fixture fixture) {
     env = fixture.getTestEnv();
     browser = fixture.getBrowser();
 
-    Window currentWindow = browser.currentWindow();
+    mainWin = browser.currentWindow();
     browser.windows().stream()
-      .filter(w -> ! w.equals(currentWindow))
+      .filter(w -> ! w.equals(mainWin))
       .forEach(Window::close);
   }
 

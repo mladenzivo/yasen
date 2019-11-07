@@ -38,22 +38,22 @@ public class Window {
     return new Element(new WindowElementContext(), By.cssSelector(cssSelector));
   }
 
-  protected void execute(Runnable command) {
+  private void execute(Runnable command) {
     activate();
     browser.execute(command);
   }
 
-  protected <R> R execute(Supplier<R> command) {
+  private <R> R execute(Supplier<R> command) {
     activate();
     return browser.execute(command);
   }
 
-  protected <A> void execute(Consumer<A> command, A arg) {
+  private <A> void execute(Consumer<A> command, A arg) {
     activate();
     browser.execute(command, arg);
   }
 
-  protected <A, R> R execute(Function<A, R> command, A arg) {
+  private <A, R> R execute(Function<A, R> command, A arg) {
     activate();
     return browser.execute(command, arg);
   }

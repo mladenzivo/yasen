@@ -1,18 +1,10 @@
 package ru.stqa.lenium;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ClickTest extends TestBase {
-
-  private Window mainWin;
-
-  @BeforeEach
-  void checkPreconditions() {
-    mainWin = browser.currentWindow();
-  }
 
   @Test
   void canClickElementThatIsNotImmediatelyPresent() {
