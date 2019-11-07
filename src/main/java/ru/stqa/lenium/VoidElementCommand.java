@@ -1,17 +1,17 @@
 package ru.stqa.lenium;
 
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import ru.stqa.trier.TimeBasedTrier;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 class VoidElementCommand implements Runnable {
 
-  private Supplier<WebElement> elementSupplier;
+  private Element.WebElementSupplier elementSupplier;
   private Consumer<WebElement> command;
 
-  VoidElementCommand(Supplier<WebElement> elementSupplier, Consumer<WebElement> command) {
+  VoidElementCommand(Element.WebElementSupplier elementSupplier, Consumer<WebElement> command) {
     this.elementSupplier = elementSupplier;
     this.command = command;
   }
@@ -19,7 +19,14 @@ class VoidElementCommand implements Runnable {
   @Override
   public void run() {
     try {
-      new TimeBasedTrier(60000).tryTo(() -> command.accept(elementSupplier.get()));
+      new TimeBasedTrier(5000).tryTo(() -> {
+        try {
+          command.accept(elementSupplier.get());
+        } catch (StaleElementReferenceException e) {
+          elementSupplier.invalidate();
+          throw e;
+        }
+      });
     } catch (Throwable e) {
       e.printStackTrace();
       throw new RuntimeException(e);

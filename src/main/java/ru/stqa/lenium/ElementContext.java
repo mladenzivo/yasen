@@ -5,4 +5,5 @@ import org.openqa.selenium.WebElement;
 
 interface ElementContext {
   WebElement getElementBy(By locator);
+  void invalidate();
 }

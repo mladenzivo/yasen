@@ -16,15 +16,19 @@ public class Element {
     this.locator = locator;
   }
 
-  private class WebElementSupplier implements Supplier<WebElement> {
+  class WebElementSupplier implements Supplier<WebElement> {
     @Override
     public WebElement get() {
       try {
-        return new TimeBasedTrier<WebElement>(60000).tryTo(() -> context.getElementBy(locator));
+        return new TimeBasedTrier<WebElement>(5000).tryTo(() -> context.getElementBy(locator));
       } catch (Throwable e) {
         e.printStackTrace();
         throw new RuntimeException(e);
       }
+    }
+
+    public void invalidate() {
+      context.invalidate();
     }
   }
 
@@ -37,6 +41,11 @@ public class Element {
         element = context.getElementBy(locator);
       }
       return element;
+    }
+
+    @Override
+    public void invalidate() {
+      element = null;
     }
   }
 

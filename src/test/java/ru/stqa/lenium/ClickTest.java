@@ -43,4 +43,32 @@ class ClickTest extends TestBase {
     // assert
     assertThat(mainWin.title()).isEqualTo("target");
   }
+
+  @Test
+  void canClickElementThatBecomesStale() {
+    // arrange
+    String target = env.createPage("target", "<p>Hello, world!</p>");
+    String subtarget = env.createPage("subtarget",
+      "$(document).ready(function() { "
+        + "window.setTimeout(function() {"
+        + String.format("$(\"p\").append(\"<a href='%s'>click 2</a>\")", target)
+        + "}, 1000);"
+        + "});",
+      "<p></p>");
+    String url = env.createPage("source",
+      "$(document).ready(function() { "
+        + "window.setTimeout(function() {"
+        + String.format("$(\"p\").append(\"<a href='%s'>click 1</a>\")", subtarget)
+        + "}, 1000);"
+        + "});",
+      "<p></p>");
+
+    // act
+    Element link = mainWin.open(url).$("a");
+    link.click();
+    link.click();
+
+    // assert
+    assertThat(mainWin.title()).isEqualTo("target");
+  }
 }

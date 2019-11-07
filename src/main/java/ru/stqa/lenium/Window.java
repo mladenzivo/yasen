@@ -32,6 +32,11 @@ public class Window {
       }
       return element;
     }
+
+    @Override
+    public void invalidate() {
+      element = null;
+    }
   }
 
   public Element $(String cssSelector) {
