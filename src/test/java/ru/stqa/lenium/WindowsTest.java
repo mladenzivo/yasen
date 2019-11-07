@@ -1,5 +1,6 @@
 package ru.stqa.lenium;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
@@ -8,93 +9,149 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class WindowsTest extends TestBase {
 
+  private Window mainWin;
+
+  @BeforeEach
+  void checkPreconditions() {
+    mainWin = browser.currentWindow();
+    assertThat(browser.windows()).hasSize(1);
+  }
+
   @Test
   void canObtainCurrentWindowTwice() {
+    // act
     Window win1 = browser.currentWindow();
     Window win2 = browser.currentWindow();
+
+    // assert
     assertThat(win1).isSameAs(win2);
   }
 
   @Test
   void canOpenAndCloseWindow() {
-    assertThat(browser.windows()).hasSize(1);
-    Window mainWin = browser.currentWindow();
-
+    // act
     Window newWin = browser.openNewWindow();
-    assertThat(browser.windows()).hasSize(2);
-    assertThat(newWin).isNotSameAs(mainWin);
 
+    // assert
+    assertThat(browser.windows()).hasSize(2);
+    assertThat(browser.currentWindow()).isEqualTo(newWin);
+    assertThat(newWin).isNotEqualTo(mainWin);
+
+    // act
     newWin.close();
+
+    // assert
     assertThat(browser.windows()).hasSize(1);
+    assertThat(browser.currentWindow()).isEqualTo(mainWin);
+  }
+
+  @Test
+  void canOpenAndCloseWindowInDifferentOrder() {
+    // act
+    Window newWin = browser.openNewWindow();
+
+    // assert
+    assertThat(browser.windows()).hasSize(2);
+    assertThat(browser.currentWindow()).isEqualTo(newWin);
+    assertThat(newWin).isNotEqualTo(mainWin);
+
+    // act
+    mainWin.close();
+
+    // assert
+    assertThat(browser.windows()).hasSize(1);
+    assertThat(browser.currentWindow()).isEqualTo(newWin);
   }
 
   @Test
   void canOpenUrlInNewWindow() {
-    assertThat(browser.windows()).hasSize(1);
-    Window mainWin = browser.currentWindow();
-
+    // arrange
     String url = env.createPage("canOpenUrlInNewWindow", "<p>Hello, world!</p>");
+
+    // act
     Window newWin = browser.openInNewWindow(url);
+
+    // assert
     assertThat(browser.windows()).hasSize(2);
     assertThat(newWin).isNotSameAs(mainWin);
-
     assertThat(newWin.title()).isEqualTo("canOpenUrlInNewWindow");
     assertThat(mainWin.title()).isNotEqualTo("canOpenUrlInNewWindow");
   }
 
   @Test
   void canFindNewWindow() {
-    assertThat(browser.windows()).hasSize(1);
-    Window mainWin = browser.currentWindow();
-
+    // arrange
     String target = env.createPage("target", "<p>Hello, world!</p>");
     String url = env.createPage("source", String.format("<p><a href='%s' target='_blank'>click</a></p>", target));
+
+    // act
     mainWin.open(url).$("a").click();
-
     Window newWin = browser.findNewWindow();
-    assertThat(browser.windows()).hasSize(2);
-    assertThat(newWin).isNotSameAs(mainWin);
 
+    // assert
+    assertThat(browser.windows()).hasSize(2);
+    assertThat(newWin).isNotEqualTo(mainWin);
+  }
+
+  @Test
+  void canGetTitleOfMultipleWindows() {
+    // arrange
+    String url1 = env.createPage("page1", "<p>Hello, world!</p>");
+    String url2 = env.createPage("page2", "<p>Hello, world!</p>");
+
+    // act
+    mainWin.open(url1);
+    Window newWin = browser.openInNewWindow(url2);
+
+    // assert
+    assertThat(mainWin.title()).isEqualTo("page1");
+    assertThat(newWin.title()).isEqualTo("page2");
+  }
+
+  @Test
+  void canGetTitleOfMultipleWindowsOpenedByClick() {
+    // arrange
+    String target = env.createPage("target", "<p>Hello, world!</p>");
+    String url = env.createPage("source", String.format("<p><a href='%s' target='_blank'>click</a></p>", target));
+
+    // act
+    mainWin.open(url).$("a").click();
+    Window newWin = browser.findNewWindow();
+
+    // assert
     assertThat(mainWin.title()).isEqualTo("source");
     assertThat(newWin.title()).isEqualTo("target");
   }
 
   @Test
   void canFindNewWindows() {
+    // arrange
     String target = env.createPage("target", "<p>Hello, world!</p>");
     String url = env.createPage("source", String.format("<p><a href='%s' target='_blank'>click</a></p>", target));
 
-    assertThat(browser.windows()).hasSize(1);
-    Window mainWin = browser.currentWindow();
-
+    // act
     mainWin.open(url).$("a").click();
-    mainWin.open(url).$("a").click();
-
     Set<Window> newWins = browser.findNewWindows();
-    assertThat(newWins).hasSize(2);
-    assertThat(browser.windows()).hasSize(3);
-    newWins.forEach(win -> {
-      assertThat(win.title()).isEqualTo("target");
-    });
+
+    // assert
+    assertThat(newWins).hasSizeGreaterThanOrEqualTo(1);
+    newWins.forEach(win -> assertThat(win).isNotEqualTo(mainWin));
   }
 
   @Test
   void canWaitForNewWindow() {
-    assertThat(browser.windows()).hasSize(1);
-    Window mainWin = browser.currentWindow();
-
+    // arrange
     String target = env.createPage("target", "<p>Hello, world!</p>");
     String url = env.createPage("source", String.format(
-            "<p><a onclick='setTimeout(function() { window.open(\"%s\") }, 1000)'>click</a></p>",
-            target));
+      "<p><a onclick='setTimeout(function() { window.open(\"%s\") }, 1000)'>click</a></p>",
+      target));
+
+    // act
     mainWin.open(url).$("a").click();
-
     Window newWin = browser.findNewWindow();
+
+    // assert
     assertThat(browser.windows()).hasSize(2);
-    assertThat(newWin).isNotSameAs(mainWin);
-
-    assertThat(mainWin.title()).isEqualTo("source");
-    assertThat(newWin.title()).isEqualTo("target");
+    assertThat(newWin).isNotEqualTo(mainWin);
   }
-
 }
