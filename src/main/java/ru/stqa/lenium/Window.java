@@ -21,13 +21,21 @@ public class Window {
     this.windowHandle = windowHandle;
   }
 
-  public Element $(String cssSelector) {
-    return new Element(this, By.cssSelector(cssSelector));
+  private class WindowElementContext implements ElementContext {
+    private WebElement element;
+
+    @Override
+    public WebElement getElementBy(By locator) {
+      if (element == null) {
+        activate();
+        element = Window.this.driver.findElement(locator);
+      }
+      return element;
+    }
   }
 
-  WebElement findElement(By locator) {
-    activate();
-    return browser.driver.findElement(locator);
+  public Element $(String cssSelector) {
+    return new Element(new WindowElementContext(), By.cssSelector(cssSelector));
   }
 
   protected void execute(Runnable command) {

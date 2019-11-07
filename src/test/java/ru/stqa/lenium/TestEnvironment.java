@@ -29,7 +29,16 @@ class TestEnvironment {
   }
 
   String createPage(String title, String body) {
-    String html = String.format("<html><head><title>%s</title></head><body>%s</body></html>", title, body);
+    return createPage(title, "", body);
+  }
+
+  String createPage(String title, String script, String body) {
+    String html = String.format("<html><head><title>%s</title>"
+      + "<script src=\"https://code.jquery.com/jquery-3.4.1.slim.min.js\" "
+      + "integrity=\"sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=\" crossorigin=\"anonymous\"></script>"
+      + "<script>%s</script>"
+      + "</head><body>%s</body></html>",
+      title, script, body);
     try {
       File pageFile = File.createTempFile("page", ".html", tfs);
       Files.write(pageFile.toPath(), html.getBytes());
