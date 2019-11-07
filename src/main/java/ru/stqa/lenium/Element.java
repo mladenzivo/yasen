@@ -6,10 +6,10 @@ import org.openqa.selenium.interactions.Actions;
 
 public class Element {
 
-  private Dom dom;
+  private Window dom;
   private By locator;
 
-  public Element(Dom dom, By locator) {
+  public Element(Window dom, By locator) {
     this.dom = dom;
     this.locator = locator;
   }
@@ -38,5 +38,4 @@ public class Element {
   public String text() {
     return dom.findElement(locator).getText();
   }
-
 }
