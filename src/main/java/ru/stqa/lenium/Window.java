@@ -8,7 +8,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class Window {
+public class Window implements CanBeActivated {
 
   final Browser browser;
   final WebDriver driver;
@@ -71,9 +71,8 @@ public class Window {
     return execute(browser.driver::getTitle);
   };
 
-  protected Window activate() {
+  public void activate() {
     browser.selectWindow(this.windowHandle);
-    return this;
   }
 
 }

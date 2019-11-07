@@ -1,6 +1,5 @@
 package ru.stqa.lenium;
 
-import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import ru.stqa.trier.TimeBasedTrier;
