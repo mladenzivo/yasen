@@ -97,7 +97,9 @@ public class Browser implements AutoCloseable {
         updateWindows();
         return selectWindow(windows.keySet().stream()
           .filter(h -> ! knownWindows.contains(h))
-          .findFirst().orElseThrow(NotFoundException::new));
+          .findFirst()
+          .map(win -> windowStack.push(win))
+          .orElseThrow(NotFoundException::new));
       }
     );
   }
