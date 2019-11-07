@@ -2,7 +2,6 @@ package ru.stqa.lenium;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -21,26 +20,8 @@ public class Window {
     this.windowHandle = windowHandle;
   }
 
-  private class WindowElementContext implements ElementContext {
-    private WebElement element;
-
-    @Override
-    public WebElement getElementBy(By locator) {
-      if (element == null) {
-        activate();
-        element = Window.this.driver.findElement(locator);
-      }
-      return element;
-    }
-
-    @Override
-    public void invalidate() {
-      element = null;
-    }
-  }
-
   public Element $(String cssSelector) {
-    return new Element(new WindowElementContext(), By.cssSelector(cssSelector));
+    return new Element(new TopLevelElementContext(this), By.cssSelector(cssSelector));
   }
 
   private void execute(Runnable command) {

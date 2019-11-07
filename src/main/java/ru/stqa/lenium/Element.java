@@ -32,25 +32,8 @@ public class Element {
     }
   }
 
-  private class EnclosedElementContext implements ElementContext {
-    private WebElement element;
-
-    @Override
-    public WebElement getElementBy(By locator) {
-      if (element == null) {
-        element = context.getElementBy(locator);
-      }
-      return element;
-    }
-
-    @Override
-    public void invalidate() {
-      element = null;
-    }
-  }
-
   public Element $(String cssSelector) {
-    return new Element(new EnclosedElementContext(), By.cssSelector(cssSelector));
+    return new Element(new ChildElementContext(context), By.cssSelector(cssSelector));
   }
 
   public void clear() {
