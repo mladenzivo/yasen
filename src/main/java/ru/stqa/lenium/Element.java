@@ -28,15 +28,15 @@ public class Element implements Supplier<WebElement> {
   }
 
   public void clear() {
-    new ElementCommand(this, WebElement::clear).run();
+    new ElementCommand<Void>(this, WebElement::clear).get();
   }
 
   public void click() {
-    new ElementCommand(this, WebElement::click).run();
+    new ElementCommand<Void>(this, WebElement::click).get();
   }
 
   public void sendKeys(String text) {
-    new ElementCommand(this, el -> el.sendKeys(text)).run();
+    new ElementCommand<Void>(this, el -> { el.sendKeys(text); return null; }).get();
   }
 
 //  public void sendKeysSlowly(String text, int delay) {
@@ -48,7 +48,7 @@ public class Element implements Supplier<WebElement> {
 //    actions.perform();
 //  }
 
-//  public String text() {
-//    return new ElementCommand(this, WebElement::getText).get();
-//  }
+  public String text() {
+    return new ElementCommand<String>(this, WebElement::getText).get();
+  }
 }

@@ -28,6 +28,10 @@ class TestEnvironment {
     PortProber.waitForPortUp(port, 5, TimeUnit.SECONDS);
   }
 
+  String createPage(String body) {
+    return createPage("", "", body);
+  }
+
   String createPage(String title, String body) {
     return createPage(title, "", body);
   }
