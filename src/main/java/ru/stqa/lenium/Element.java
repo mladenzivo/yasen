@@ -13,8 +13,8 @@ public class Element {
   private WebElement element;
 
   Element(ElementContext context, By locator) {
-    this.locator = locator;
     this.context = context;
+    this.locator = locator;
   }
 
   WebElement getWebElement() {
@@ -22,7 +22,7 @@ public class Element {
       try {
         element = new TimeBasedTrier<>(5000).tryTo(() -> {
           try {
-            return context.findElementBy(locator);
+            return context.findFirstBy(locator);
           } catch (StaleElementReferenceException e) {
             context.invalidate();
             throw e;
@@ -45,6 +45,10 @@ public class Element {
 
   public Element $(String cssSelector) {
     return new Element(new ChildElementContext(this), By.cssSelector(cssSelector));
+  }
+
+  public ElementList $$(String cssSelector) {
+    return new ElementList(new ChildElementContext(this), By.cssSelector(cssSelector));
   }
 
   public void clear() {

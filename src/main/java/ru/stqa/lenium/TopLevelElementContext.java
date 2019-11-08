@@ -3,6 +3,6 @@ package ru.stqa.lenium;
 class TopLevelElementContext extends AbstractElementContext {
 
   TopLevelElementContext(Window window) {
-    super(window.driver::findElement, window::activate, () -> { throw new UnsupportedOperationException(); });
+    super(window.driver, window::activate, () -> { throw new UnsupportedOperationException(); });
   }
 }

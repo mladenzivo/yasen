@@ -7,32 +7,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 class FindChildrenTest extends TestBase {
 
   @Test
-  void canFindAChildAndGetItsText() {
+  void canFindChildrenAndGetTheirText() {
     // arrange
-    String url = env.createPage("<p>Not a child</p><div><p>Hello, world!</p></div>");
+    String url = env.createPage("<p>Not a child</p><ul><li><p>One</p></li><li><p>Two</p></li><li><p>Three</p></li></ul>");
 
     // act
-    String text = mainWin.open(url).$("div").$("p").text();
+    ElementList list = mainWin.open(url).$("ul").$$("li p");
 
     // assert
-    assertThat(text).isEqualTo("Hello, world!");
-  }
-
-  @Test
-  void canFindAChildThatIsNotImmediatelyPresent() {
-    // arrange
-    String url = env.createPage("source",
-      "$(document).ready(function() { "
-        + "window.setTimeout(function() {"
-        + "$(\"div\").append(\"<p>Hello, world!</p>\")"
-        + "}, 1000);"
-        + "});",
-      "<p>Not a child</p><div></div>");
-
-    // act
-    String text = mainWin.open(url).$("div").$("p").text();
-
-    // assert
-    assertThat(text).isEqualTo("Hello, world!");
+    assertThat(list).hasSize(3);
   }
 }

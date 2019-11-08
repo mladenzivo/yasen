@@ -24,6 +24,10 @@ public class Window implements CanBeActivated {
     return new Element(new TopLevelElementContext(this), By.cssSelector(cssSelector));
   }
 
+  public ElementList $$(String cssSelector) {
+    return new ElementList(new TopLevelElementContext(this), By.cssSelector(cssSelector));
+  }
+
   private void execute(Runnable command) {
     activate();
     browser.execute(command);
