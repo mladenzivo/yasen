@@ -1,4 +1,4 @@
-package ru.stqa.lenium;
+package ru.stqa.yasen;
 
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.NotFoundException;

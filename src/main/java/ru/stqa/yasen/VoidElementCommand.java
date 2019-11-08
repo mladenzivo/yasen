@@ -1,4 +1,4 @@
-package ru.stqa.lenium;
+package ru.stqa.yasen;
 
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;

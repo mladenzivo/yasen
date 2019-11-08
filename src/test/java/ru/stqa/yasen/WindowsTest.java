@@ -1,4 +1,4 @@
-package ru.stqa.lenium;
+package ru.stqa.yasen;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

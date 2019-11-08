@@ -1,4 +1,4 @@
-package ru.stqa.lenium;
+package ru.stqa.yasen;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.SearchContext;

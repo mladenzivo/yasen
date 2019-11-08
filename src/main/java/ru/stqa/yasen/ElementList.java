@@ -1,4 +1,4 @@
-package ru.stqa.lenium;
+package ru.stqa.yasen;
 
 import com.google.common.collect.ForwardingList;
 import org.openqa.selenium.By;

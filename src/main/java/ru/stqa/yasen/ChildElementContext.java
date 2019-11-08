@@ -1,4 +1,4 @@
-package ru.stqa.lenium;
+package ru.stqa.yasen;
 
 class ChildElementContext extends AbstractElementContext {
 

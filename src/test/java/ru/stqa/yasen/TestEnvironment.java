@@ -1,4 +1,4 @@
-package ru.stqa.lenium;
+package ru.stqa.yasen;
 
 import io.undertow.Undertow;
 import io.undertow.server.handlers.resource.PathResourceManager;
