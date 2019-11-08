@@ -2,7 +2,7 @@ package ru.stqa.lenium;
 
 class ChildElementContext extends AbstractElementContext {
 
-  ChildElementContext(ElementContext parent) {
-    super(parent::getElementBy, parent::activate);
+  ChildElementContext(WebElementSupplier supplier) {
+    super(by -> supplier.getWebElement().findElement(by), () -> supplier.getContext().activate());
   }
 }

@@ -8,10 +8,10 @@ import java.util.function.Consumer;
 
 class VoidElementCommand implements Runnable {
 
-  private Element.WebElementSupplier elementSupplier;
+  private WebElementSupplier elementSupplier;
   private Consumer<WebElement> command;
 
-  VoidElementCommand(Element.WebElementSupplier elementSupplier, Consumer<WebElement> command) {
+  VoidElementCommand(WebElementSupplier elementSupplier, Consumer<WebElement> command) {
     this.elementSupplier = elementSupplier;
     this.command = command;
   }
@@ -21,7 +21,7 @@ class VoidElementCommand implements Runnable {
     try {
       new TimeBasedTrier(5000).tryTo(() -> {
         try {
-          command.accept(elementSupplier.get());
+          command.accept(elementSupplier.getWebElement());
         } catch (StaleElementReferenceException e) {
           elementSupplier.invalidate();
           throw e;

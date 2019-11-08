@@ -9,7 +9,7 @@ class FindChildrenTest extends TestBase {
   @Test
   void canFindAChildAndGetItsText() {
     // arrange
-    String url = env.createPage("<div><p>Hello, world!</p></div>");
+    String url = env.createPage("<p>Not a child</p><div><p>Hello, world!</p></div>");
 
     // act
     String text = mainWin.open(url).$("div").$("p").text();
@@ -27,7 +27,7 @@ class FindChildrenTest extends TestBase {
         + "$(\"div\").append(\"<p>Hello, world!</p>\")"
         + "}, 1000);"
         + "});",
-      "<div></div>");
+      "<p>Not a child</p><div></div>");
 
     // act
     String text = mainWin.open(url).$("div").$("p").text();
