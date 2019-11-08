@@ -9,21 +9,18 @@ abstract class AbstractElementContext implements ElementContext {
 
   private final Function<By, WebElement> finder;
   private final Runnable activator;
+  private final Runnable invalidator;
 
-  private WebElement element;
-
-  AbstractElementContext(Function<By, WebElement> finder, Runnable activator) {
+  AbstractElementContext(Function<By, WebElement> finder, Runnable activator, Runnable invalidator) {
     this.finder = finder;
     this.activator = activator;
+    this.invalidator = invalidator;
   }
 
   @Override
-  public WebElement getElementBy(By locator) {
-    if (element == null) {
-      activate();
-      element = finder.apply(locator);
-    }
-    return element;
+  public WebElement findElementBy(By locator) {
+    activate();
+    return finder.apply(locator);
   }
 
   @Override
@@ -33,6 +30,6 @@ abstract class AbstractElementContext implements ElementContext {
 
   @Override
   public void invalidate() {
-    element = null;
+    invalidator.run();
   }
 }

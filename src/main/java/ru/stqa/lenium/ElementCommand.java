@@ -9,11 +9,11 @@ import java.util.function.Supplier;
 
 class ElementCommand<R> implements Supplier<R> {
 
-  private WebElementSupplier elementSupplier;
-  private Function<WebElement, R> command;
+  private final Element element;
+  private final Function<WebElement, R> command;
 
-  ElementCommand(WebElementSupplier elementSupplier, Function<WebElement, R> command) {
-    this.elementSupplier = elementSupplier;
+  ElementCommand(Element element, Function<WebElement, R> command) {
+    this.element = element;
     this.command = command;
   }
 
@@ -22,9 +22,9 @@ class ElementCommand<R> implements Supplier<R> {
     try {
       return new TimeBasedTrier<R>(5000).tryTo(() -> {
         try {
-          return command.apply(elementSupplier.getWebElement());
+          return command.apply(element.getWebElement());
         } catch (StaleElementReferenceException e) {
-          elementSupplier.invalidate();
+          element.invalidate();
           throw e;
         }
       });

@@ -1,30 +1,62 @@
 package ru.stqa.lenium;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
+import ru.stqa.trier.TimeBasedTrier;
 
 public class Element {
 
-  private final WebElementSupplier elementSupplier;
+  private final ElementContext context;
+  private final By locator;
+
+  private WebElement element;
 
   Element(ElementContext context, By locator) {
-    elementSupplier = new WebElementSupplier(context, locator);
+    this.locator = locator;
+    this.context = context;
+  }
+
+  WebElement getWebElement() {
+    if (element == null) {
+      try {
+        element = new TimeBasedTrier<>(5000).tryTo(() -> {
+          try {
+            return context.findElementBy(locator);
+          } catch (StaleElementReferenceException e) {
+            context.invalidate();
+            throw e;
+          }
+        });
+      } catch (Throwable e) {
+        e.printStackTrace();
+      }
+    }
+    return element;
+  }
+
+  void invalidate() {
+    element = null;
+  }
+
+  void activate() {
+    context.activate();
   }
 
   public Element $(String cssSelector) {
-    return new Element(new ChildElementContext(elementSupplier), By.cssSelector(cssSelector));
+    return new Element(new ChildElementContext(this), By.cssSelector(cssSelector));
   }
 
   public void clear() {
-    new VoidElementCommand(elementSupplier, WebElement::clear).run();
+    new VoidElementCommand(this, WebElement::clear).run();
   }
 
   public void click() {
-    new VoidElementCommand(elementSupplier, WebElement::click).run();
+    new VoidElementCommand(this, WebElement::click).run();
   }
 
   public void sendKeys(String text) {
-    new ElementCommand<Void>(elementSupplier, el -> { el.sendKeys(text); return null; }).get();
+    new ElementCommand<Void>(this, el -> { el.sendKeys(text); return null; }).get();
   }
 
 //  public void sendKeysSlowly(String text, int delay) {
@@ -37,6 +69,6 @@ public class Element {
 //  }
 
   public String text() {
-    return new ElementCommand<String>(elementSupplier, WebElement::getText).get();
+    return new ElementCommand<String>(this, WebElement::getText).get();
   }
 }
