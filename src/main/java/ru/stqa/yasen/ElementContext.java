@@ -5,8 +5,7 @@ import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
-interface ElementContext extends CanBeActivated {
+interface ElementContext extends CanBeActivated, CanBeInvalidated {
   WebElement findFirstBy(By locator);
   List<WebElement> findAllBy(By locator);
-  void invalidate();
 }

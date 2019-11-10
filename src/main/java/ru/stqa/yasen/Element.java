@@ -1,50 +1,18 @@
 package ru.stqa.yasen;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
-import ru.stqa.trier.TimeBasedTrier;
 
-public class Element {
+public abstract class Element {
 
-  private final ElementContext context;
-  private final By locator;
+  abstract WebElement getWebElement();
 
-  private WebElement element;
+  abstract void invalidate();
 
-  Element(ElementContext context, By locator) {
-    this.context = context;
-    this.locator = locator;
-  }
-
-  WebElement getWebElement() {
-    if (element == null) {
-      try {
-        element = new TimeBasedTrier<>(5000).tryTo(() -> {
-          try {
-            return context.findFirstBy(locator);
-          } catch (StaleElementReferenceException e) {
-            context.invalidate();
-            throw e;
-          }
-        });
-      } catch (Throwable e) {
-        e.printStackTrace();
-      }
-    }
-    return element;
-  }
-
-  void invalidate() {
-    element = null;
-  }
-
-  void activate() {
-    context.activate();
-  }
+  abstract void activate();
 
   public Element $(String cssSelector) {
-    return new Element(new ChildElementContext(this), By.cssSelector(cssSelector));
+    return new StandaloneElement(new ChildElementContext(this), By.cssSelector(cssSelector));
   }
 
   public ElementList $$(String cssSelector) {
@@ -60,7 +28,7 @@ public class Element {
   }
 
   public void sendKeys(String text) {
-    new ElementCommand<Void>(this, el -> { el.sendKeys(text); return null; }).get();
+    new VoidElementCommand(this, el -> { el.sendKeys(text); }).run();
   }
 
 //  public void sendKeysSlowly(String text, int delay) {

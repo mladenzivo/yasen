@@ -21,7 +21,7 @@ public class Window implements CanBeActivated {
   }
 
   public Element $(String cssSelector) {
-    return new Element(new TopLevelElementContext(this), By.cssSelector(cssSelector));
+    return new StandaloneElement(new TopLevelElementContext(this), By.cssSelector(cssSelector));
   }
 
   public ElementList $$(String cssSelector) {
@@ -73,7 +73,7 @@ public class Window implements CanBeActivated {
 
   public String title() {
     return execute(browser.driver::getTitle);
-  };
+  }
 
   public void activate() {
     browser.selectWindow(this.windowHandle);

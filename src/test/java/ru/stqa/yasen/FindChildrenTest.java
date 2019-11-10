@@ -15,6 +15,9 @@ class FindChildrenTest extends TestBase {
     ElementList list = mainWin.open(url).$("ul").$$("li p");
 
     // assert
-    assertThat(list).hasSize(3);
+    //assertThat(list).hasSize(3);
+    assertThat(list.get(0).text()).isEqualTo("One");
+    assertThat(list.get(1).text()).isEqualTo("Two");
+    assertThat(list.get(2).text()).isEqualTo("Three");
   }
 }

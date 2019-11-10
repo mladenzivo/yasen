@@ -71,4 +71,23 @@ class ClickTest extends TestBase {
     // assert
     assertThat(mainWin.title()).isEqualTo("target");
   }
+
+  @Test
+  void canClickElementInAListThatBecomesStale() {
+    // arrange
+    String target = env.createPage("target", "<p>Hello, world!</p>");
+    String subtarget = env.createPage("subtarget",
+      String.format("<ul><li><a href='%s'>link 3</a></li><li><a href='%s'>link 4</a></li></ul>", "nowhere.html", target));
+    String url = env.createPage("source",
+      String.format("<ul><li><a href='%s'>link 1</a></li><li><a href='%s'>link 2</a></li></ul>", subtarget, target));
+
+    // act
+    ElementList listItems = mainWin.open(url).$$("ul li");
+    for (Element item : listItems) {
+      item.$("a").click();
+    }
+
+    // assert
+    assertThat(mainWin.title()).isEqualTo("target");
+  }
 }
