@@ -8,4 +8,9 @@ class ChildElementContext extends AbstractElementContext {
     super(parent::getWebElement, parent::activate, parent::invalidate);
     this.parent = parent;
   }
+
+  @Override
+  public String toString() {
+    return parent.toString();
+  }
 }

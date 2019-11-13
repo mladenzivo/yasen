@@ -16,6 +16,7 @@ class Fixture implements ExtensionContext.Store.CloseableResource {
   }
 
   Browser getBrowser() {
+    System.setProperty("webdriver.firefox.logfile", "/dev/null");
     return drivers.computeIfAbsent(Thread.currentThread(), (t) -> new Browser(new FirefoxDriver()));
   }
 

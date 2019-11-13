@@ -23,4 +23,9 @@ class ElementListContext implements CanBeActivated, CanBeInvalidated {
   public void invalidate() {
     list.invalidate();
   }
+
+  @Override
+  public String toString() {
+    return list.toString();
+  }
 }

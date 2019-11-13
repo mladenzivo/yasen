@@ -79,4 +79,8 @@ public class Window implements CanBeActivated {
     browser.selectWindow(this.windowHandle);
   }
 
+  @Override
+  public String toString() {
+    return String.format("<%s>", windowHandle);
+  }
 }

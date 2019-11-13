@@ -3,11 +3,15 @@ package ru.stqa.yasen;
 import com.google.common.collect.ForwardingList;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ElementList extends ForwardingList<ElementInList> {
+
+  private final Logger log = LoggerFactory.getLogger(ElementList.class);
 
   private final ElementContext context;
   private final By locator;
@@ -33,6 +37,7 @@ public class ElementList extends ForwardingList<ElementInList> {
   @Override
   protected List<ElementInList> delegate() {
     if (! loaded) {
+      log.debug("L<E> '{}' is to be found", this);
       List<WebElement> elements = context.findAllBy(locator);
       int toCopy = Math.min(items.size(), elements.size());
       if (items.size() > toCopy) {
@@ -47,7 +52,15 @@ public class ElementList extends ForwardingList<ElementInList> {
         }
       }
       loaded = true;
+      log.debug("L<E> '{}' has been found", this);
+    } else {
+      log.debug("L<E> '{}' has already been found in past", this);
     }
     return items;
+  }
+
+  @Override
+  public String toString() {
+    return String.format("%s.$$(%s)", context, locator);
   }
 }

@@ -20,15 +20,15 @@ public abstract class Element {
   }
 
   public void clear() {
-    new VoidElementCommand(this, WebElement::clear).run();
+    new VoidElementCommand(this, "clear" ,WebElement::clear).run();
   }
 
   public void click() {
-    new VoidElementCommand(this, WebElement::click).run();
+    new VoidElementCommand(this, "click", WebElement::click).run();
   }
 
   public void sendKeys(String text) {
-    new VoidElementCommand(this, el -> { el.sendKeys(text); }).run();
+    new VoidElementCommand(this, "sendKeys", el -> { el.sendKeys(text); }).run();
   }
 
 //  public void sendKeysSlowly(String text, int delay) {
