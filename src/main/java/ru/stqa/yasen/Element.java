@@ -27,8 +27,8 @@ public abstract class Element {
     new VoidElementCommand(this, "click", WebElement::click).run();
   }
 
-  public void sendKeys(String text) {
-    new VoidElementCommand(this, "sendKeys", el -> { el.sendKeys(text); }).run();
+  public void sendKeys(CharSequence text) {
+    new VoidElementCommandWithParameter<>(this, "sendKeys", WebElement::sendKeys, text).run();
   }
 
 //  public void sendKeysSlowly(String text, int delay) {
@@ -41,6 +41,10 @@ public abstract class Element {
 //  }
 
   public String text() {
-    return new ElementCommand<String>(this, WebElement::getText).get();
+    return new ElementCommand<>(this, WebElement::getText).get();
+  }
+
+  public String value() {
+    return new ElementCommand<>(this, el -> el.getAttribute("value")).get();
   }
 }
