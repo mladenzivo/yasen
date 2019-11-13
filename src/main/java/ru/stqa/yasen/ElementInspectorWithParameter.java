@@ -6,19 +6,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.stqa.trier.TimeBasedTrier;
 
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
+import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
-class VoidElementCommandWithParameter<T> implements Runnable {
+class ElementInspectorWithParameter<T, R> implements Supplier<R> {
 
-  private final Logger log = LoggerFactory.getLogger(VoidElementCommandWithParameter.class);
+  private final Logger log = LoggerFactory.getLogger(ElementInspectorWithParameter.class);
 
   private final Element element;
   private final String commandName;
-  private final BiConsumer<WebElement, T> command;
-  private T parameter;
+  private final BiFunction<WebElement, T, R> command;
+  private final T parameter;
 
-  VoidElementCommandWithParameter(Element element, String commandName, BiConsumer<WebElement, T> command, T parameter) {
+  ElementInspectorWithParameter(Element element, String commandName, BiFunction<WebElement, T, R> command, T parameter) {
     this.element = element;
     this.commandName = commandName;
     this.command = command;
@@ -26,15 +26,16 @@ class VoidElementCommandWithParameter<T> implements Runnable {
   }
 
   @Override
-  public void run() {
+  public R get() {
+    log.debug("CMD ==> '{}'.{}('{}')", element, commandName, parameter);
     try {
-      log.debug("CMD ==> '{}'.{}('{}')", element, commandName, parameter);
-      new TimeBasedTrier(5000).tryTo(() -> {
+      return new TimeBasedTrier<R>(5000).tryTo(() -> {
         try {
           WebElement target = element.getWebElement();
           log.debug("# '{}'.{}('{}')", element, commandName, parameter);
-          command.accept(target, parameter);
-          log.debug("CMD <== '{}'.{}('{}') - OK", element, commandName, parameter);
+          R result = command.apply(target, parameter);
+          log.debug("CMD <== '{}'.{}('{}') = '{}'", element, commandName, parameter, result);
+          return result;
         } catch (StaleElementReferenceException e) {
           log.debug("Oops! Element '{}' has gone and should be recovered!", element);
           element.invalidate();
@@ -43,7 +44,6 @@ class VoidElementCommandWithParameter<T> implements Runnable {
       });
     } catch (Throwable e) {
       log.warn("WTF??!!", e);
-      e.printStackTrace();
       throw new RuntimeException(e);
     }
   }

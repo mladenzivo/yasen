@@ -20,15 +20,15 @@ public abstract class Element {
   }
 
   public void clear() {
-    new VoidElementCommand(this, "clear" ,WebElement::clear).run();
+    new ElementCommand(this, "clear" ,WebElement::clear).run();
   }
 
   public void click() {
-    new VoidElementCommand(this, "click", WebElement::click).run();
+    new ElementCommand(this, "click", WebElement::click).run();
   }
 
   public void sendKeys(CharSequence text) {
-    new VoidElementCommandWithParameter<>(this, "sendKeys", WebElement::sendKeys, text).run();
+    new ElementCommandWithParameter<>(this, "sendKeys", WebElement::sendKeys, text).run();
   }
 
 //  public void sendKeysSlowly(String text, int delay) {
@@ -41,10 +41,10 @@ public abstract class Element {
 //  }
 
   public String text() {
-    return new ElementCommand<>(this, WebElement::getText).get();
+    return new ElementInspector<>(this, "text", WebElement::getText).get();
   }
 
   public String value() {
-    return new ElementCommand<>(this, el -> el.getAttribute("value")).get();
+    return new ElementInspectorWithParameter<>(this, "attribute", WebElement::getAttribute, "value").get();
   }
 }

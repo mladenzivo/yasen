@@ -6,32 +6,34 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.stqa.trier.TimeBasedTrier;
 
-import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
-class ElementCommand implements Runnable {
+class ElementInspector<R> implements Supplier<R> {
 
-  private final Logger log = LoggerFactory.getLogger(ElementCommand.class);
+  private final Logger log = LoggerFactory.getLogger(ElementInspector.class);
 
   private final Element element;
   private final String commandName;
-  private final Consumer<WebElement> command;
+  private final Function<WebElement, R> command;
 
-  ElementCommand(Element element, String commandName, Consumer<WebElement> command) {
+  ElementInspector(Element element, String commandName, Function<WebElement, R> command) {
     this.element = element;
     this.commandName = commandName;
     this.command = command;
   }
 
   @Override
-  public void run() {
+  public R get() {
     log.debug("CMD ==> '{}'.{}()", element, commandName);
     try {
-      new TimeBasedTrier(5000).tryTo(() -> {
+      return new TimeBasedTrier<R>(5000).tryTo(() -> {
         try {
           WebElement target = element.getWebElement();
           log.debug("# '{}'.{}()", element, commandName);
-          command.accept(target);
-          log.debug("CMD <== '{}'.{}() - OK", element, commandName);
+          R result = command.apply(target);
+          log.debug("CMD <== '{}'.{}() = '{}'", element, commandName, result);
+          return result;
         } catch (StaleElementReferenceException e) {
           log.debug("Oops! Element '{}' has gone and should be recovered!", element);
           element.invalidate();
