@@ -3,8 +3,22 @@ package ru.stqa.yasen;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 class ClickTest extends TestBase {
+
+  @Test
+  void cannotClickElementThatIsNotPresent() {
+    // arrange
+    String url = env.createPage("test", "<p>Hello, world!</p>");
+
+    // act & assert
+    assertThatExceptionOfType(OperationTimeoutException.class).isThrownBy(() ->
+      mainWin.open(url).$("a").click());
+
+    // assert more
+    assertThat(mainWin.title()).isEqualTo("test");
+  }
 
   @Test
   void canClickElementThatIsNotImmediatelyPresent() {

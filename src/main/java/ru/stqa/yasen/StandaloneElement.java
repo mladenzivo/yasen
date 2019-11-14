@@ -5,6 +5,7 @@ import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.stqa.trier.LimitExceededException;
 import ru.stqa.trier.TimeBasedTrier;
 
 class StandaloneElement extends Element {
@@ -36,7 +37,7 @@ class StandaloneElement extends Element {
     if (element == null) {
       log.debug("EL '{}' is to be found", this);
       try {
-        element = new TimeBasedTrier<>(500000).tryTo(() -> {
+        element = new TimeBasedTrier<>(5000).tryTo(() -> {
           try {
             return context.findFirstBy(locator);
           } catch (StaleElementReferenceException e) {
@@ -46,8 +47,12 @@ class StandaloneElement extends Element {
           }
         });
         log.debug("EL '{}' has been found", this);
+      } catch (LimitExceededException e) {
+        log.warn("EL {} cannot be found:", this, e);
+        throw new ElementLookupTimeoutException(e);
       } catch (Throwable e) {
-        log.warn("EL {} cannot be found: {}", this, e);
+        log.warn("WTF??!!", e);
+        throw new RuntimeException(e);
       }
     } else {
       log.debug("EL '{}' has already been found in past", this);

@@ -3,6 +3,7 @@ package ru.stqa.yasen;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.stqa.trier.LimitExceededException;
 import ru.stqa.trier.TimeBasedTrier;
 
 class ElementInList extends Element {
@@ -36,8 +37,12 @@ class ElementInList extends Element {
       log.debug("EL '{}' is to be found", this);
       try {
         element = new TimeBasedTrier<>(5000).tryTo(() -> context.get(index));
-      } catch (Throwable e) {
+      } catch (LimitExceededException e) {
         log.warn("EL {} cannot be found: {}", this, e);
+        throw new ElementLookupTimeoutException(e);
+      } catch (Throwable e) {
+        log.warn("WTF??!!", e);
+        throw new RuntimeException(e);
       }
       log.debug("EL '{}' has been found", this);
     }

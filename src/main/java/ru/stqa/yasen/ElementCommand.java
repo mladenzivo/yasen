@@ -4,6 +4,7 @@ import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.stqa.trier.LimitExceededException;
 import ru.stqa.trier.TimeBasedTrier;
 
 import java.util.function.Consumer;
@@ -38,6 +39,8 @@ class ElementCommand implements Runnable {
           throw e;
         }
       });
+    } catch (LimitExceededException e) {
+      throw new OperationTimeoutException(e);
     } catch (Throwable e) {
       log.warn("WTF??!!", e);
       throw new RuntimeException(e);
