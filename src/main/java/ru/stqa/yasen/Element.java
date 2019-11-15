@@ -3,6 +3,8 @@ package ru.stqa.yasen;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import java.lang.reflect.InvocationTargetException;
+
 public abstract class Element {
 
   abstract WebElement getWebElement();
@@ -21,6 +23,14 @@ public abstract class Element {
 
   public ElementList $$(String cssSelector) {
     return new ElementList(new ChildElementContext(this), By.cssSelector(cssSelector));
+  }
+
+  public <W extends ElementWrapper> W as(Class<W> cls) {
+    try {
+      return cls.getConstructor(Element.class).newInstance(this);
+    } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   public void clear() {
@@ -48,7 +58,7 @@ public abstract class Element {
     return new ElementInspector<>(this, "text", WebElement::getText).get();
   }
 
-  public String value() {
-    return new ElementInspectorWithParameter<>(this, "attribute", WebElement::getAttribute, "value").get();
+  public String attribute(String name) {
+    return new ElementInspectorWithParameter<>(this, "attribute", WebElement::getAttribute, name).get();
   }
 }

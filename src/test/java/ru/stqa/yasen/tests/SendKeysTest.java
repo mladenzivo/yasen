@@ -3,6 +3,7 @@ package ru.stqa.yasen.tests;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
 import ru.stqa.yasen.Element;
+import ru.stqa.yasen.Input;
 import ru.stqa.yasen.testenv.TestBase;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,7 +26,7 @@ class SendKeysTest extends TestBase {
     input.sendKeys("test it");
 
     // assert
-    assertThat(input.value()).isEqualTo("test it");
+    assertThat(input.as(Input.class).value()).isEqualTo("test it");
   }
 
   @Test
@@ -44,7 +45,7 @@ class SendKeysTest extends TestBase {
     input.sendKeys("test it");
 
     // assert
-    assertThat(input.value()).isEqualTo("test it");
+    assertThat(input.as(Input.class).value()).isEqualTo("test it");
   }
 
   @Test
@@ -73,6 +74,6 @@ class SendKeysTest extends TestBase {
     input.sendKeys("test2");
 
     // assert
-    assertThat(input.value()).isEqualTo("test2");
+    assertThat(input.as(Input.class).value()).isEqualTo("test2");
   }
 }
