@@ -27,7 +27,7 @@ class ElementInspector<R> implements Supplier<R> {
   public R get() {
     log.debug("CMD ==> '{}'.{}()", element, commandName);
     try {
-      return new TimeBasedTrier<R>(5000).tryTo(() -> {
+      return new TimeBasedTrier<R>(5000).ignoring(res -> false).tryTo(() -> {
         try {
           WebElement target = element.getWebElement();
           log.debug("# '{}'.{}()", element, commandName);
