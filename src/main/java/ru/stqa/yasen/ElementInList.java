@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import ru.stqa.trier.LimitExceededException;
 import ru.stqa.trier.TimeBasedTrier;
 
-class ElementInList extends Element {
+public class ElementInList extends Element {
 
   private final Logger log = LoggerFactory.getLogger(ElementInList.class);
 
@@ -38,7 +38,7 @@ class ElementInList extends Element {
       try {
         element = new TimeBasedTrier<>(5000).tryTo(() -> context.get(index));
       } catch (LimitExceededException e) {
-        log.warn("EL {} cannot be found: {}", this, e);
+        log.debug("EL {} cannot be found: {}", this, e);
         throw new ElementLookupTimeoutException(e);
       } catch (Throwable e) {
         log.warn("WTF??!!", e);

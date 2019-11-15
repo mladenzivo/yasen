@@ -24,6 +24,10 @@ public class Window implements CanBeActivated {
     return new StandaloneElement(new TopLevelElementContext(this), By.cssSelector(cssSelector));
   }
 
+  public Element $t(String text) {
+    return new StandaloneElement(new TopLevelElementContext(this), By.xpath(String.format("//*[.='%s']",  text)));
+  }
+
   public ElementList $$(String cssSelector) {
     return new ElementList(new TopLevelElementContext(this), By.cssSelector(cssSelector));
   }
@@ -82,5 +86,9 @@ public class Window implements CanBeActivated {
   @Override
   public String toString() {
     return String.format("<%s>", windowHandle);
+  }
+
+  public String url() {
+    return execute(browser.driver::getCurrentUrl);
   }
 }

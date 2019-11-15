@@ -15,6 +15,10 @@ public abstract class Element {
     return new StandaloneElement(new ChildElementContext(this), By.cssSelector(cssSelector));
   }
 
+  public Element $t(String text) {
+    return new StandaloneElement(new ChildElementContext(this), By.xpath(String.format(".//*[.='%s']", text)));
+  }
+
   public ElementList $$(String cssSelector) {
     return new ElementList(new ChildElementContext(this), By.cssSelector(cssSelector));
   }

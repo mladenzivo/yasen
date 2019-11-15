@@ -48,7 +48,7 @@ class StandaloneElement extends Element {
         });
         log.debug("EL '{}' has been found", this);
       } catch (LimitExceededException e) {
-        log.warn("EL {} cannot be found:", this, e);
+        log.debug("EL {} cannot be found:", this, e);
         throw new ElementLookupTimeoutException(e);
       } catch (Throwable e) {
         log.warn("WTF??!!", e);
