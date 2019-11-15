@@ -1,8 +1,10 @@
-package ru.stqa.yasen;
+package ru.stqa.yasen.tests;
 
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.NoSuchSessionException;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import ru.stqa.yasen.Browser;
+import ru.stqa.yasen.testenv.TestEnvironment;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;

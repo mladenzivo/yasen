@@ -1,6 +1,7 @@
-package ru.stqa.yasen;
+package ru.stqa.yasen.tests;
 
 import org.junit.jupiter.api.Test;
+import ru.stqa.yasen.testenv.TestBase;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

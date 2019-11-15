@@ -1,7 +1,9 @@
-package ru.stqa.yasen;
+package ru.stqa.yasen.tests;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ru.stqa.yasen.Window;
+import ru.stqa.yasen.testenv.TestBase;
 
 import java.util.Set;
 

@@ -1,4 +1,4 @@
-package ru.stqa.yasen;
+package ru.stqa.yasen.testenv;
 
 import io.undertow.Undertow;
 import io.undertow.server.handlers.resource.PathResourceManager;
@@ -11,13 +11,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.concurrent.TimeUnit;
 
-class TestEnvironment {
+public class TestEnvironment {
 
   private File tfs;
   private int port;
   private Undertow server;
 
-  TestEnvironment() {
+  public TestEnvironment() {
     tfs = TemporaryFilesystem.getDefaultTmpFS().createTempDir("lenium", "tests");
     port = PortProber.findFreePort();
     server = Undertow.builder()
@@ -28,15 +28,15 @@ class TestEnvironment {
     PortProber.waitForPortUp(port, 5, TimeUnit.SECONDS);
   }
 
-  String createPage(String body) {
+  public String createPage(String body) {
     return createPage("", "", body);
   }
 
-  String createPage(String title, String body) {
+  public String createPage(String title, String body) {
     return createPage(title, "", body);
   }
 
-  String createPage(String title, String script, String body) {
+  public String createPage(String title, String script, String body) {
     String html = String.format("<html><head><title>%s</title>"
       + "<script src=\"https://code.jquery.com/jquery-3.4.1.slim.min.js\" "
       + "integrity=\"sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=\" crossorigin=\"anonymous\"></script>"

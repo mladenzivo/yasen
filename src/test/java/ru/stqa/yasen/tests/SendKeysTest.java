@@ -1,7 +1,9 @@
-package ru.stqa.yasen;
+package ru.stqa.yasen.tests;
 
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
+import ru.stqa.yasen.Element;
+import ru.stqa.yasen.testenv.TestBase;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

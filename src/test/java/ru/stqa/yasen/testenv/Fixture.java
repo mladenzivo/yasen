@@ -1,12 +1,13 @@
-package ru.stqa.yasen;
+package ru.stqa.yasen.testenv;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import ru.stqa.yasen.Browser;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-class Fixture implements ExtensionContext.Store.CloseableResource {
+public class Fixture implements ExtensionContext.Store.CloseableResource {
 
   private Map<Thread, TestEnvironment> envs = new ConcurrentHashMap<>();
   private Map<Thread, Browser> drivers = new ConcurrentHashMap<>();

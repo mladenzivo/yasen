@@ -1,6 +1,10 @@
-package ru.stqa.yasen;
+package ru.stqa.yasen.tests;
 
 import org.junit.jupiter.api.Test;
+import ru.stqa.yasen.Element;
+import ru.stqa.yasen.ElementList;
+import ru.stqa.yasen.OperationTimeoutException;
+import ru.stqa.yasen.testenv.TestBase;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -11,6 +15,19 @@ class ClickTest extends TestBase {
   void cannotClickElementThatIsNotPresent() {
     // arrange
     String url = env.createPage("test", "<p>Hello, world!</p>");
+
+    // act & assert
+    assertThatExceptionOfType(OperationTimeoutException.class).isThrownBy(() ->
+      mainWin.open(url).$("a").click());
+
+    // assert more
+    assertThat(mainWin.title()).isEqualTo("test");
+  }
+
+  @Test
+  void cannotClickElementThatIsNotVisible() {
+    // arrange
+    String url = env.createPage("test", "<p><a style='display: none'>click me</a></p>");
 
     // act & assert
     assertThatExceptionOfType(OperationTimeoutException.class).isThrownBy(() ->
