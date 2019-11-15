@@ -9,4 +9,16 @@ public class CheckBox extends Input {
   public boolean isChecked() {
     return getWebElement().isSelected();
   }
+
+  public void check() {
+    if (! isChecked()) {
+      click();
+    }
+  }
+
+  public void uncheck() {
+    if (isChecked()) {
+      click();
+    }
+  }
 }
