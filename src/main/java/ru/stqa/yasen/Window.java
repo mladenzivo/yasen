@@ -25,7 +25,7 @@ public class Window implements CanBeActivated {
   }
 
   public Element $t(String text) {
-    return new StandaloneElement(new TopLevelElementContext(this), By.xpath(String.format("//*[.='%s']",  text)));
+    return new StandaloneElement(new TopLevelElementContext(this), By.xpath(String.format("//*[normalize-space(.)='%s']",  text)));
   }
 
   public ElementList $$(String cssSelector) {

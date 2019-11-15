@@ -18,7 +18,7 @@ public abstract class Element {
   }
 
   public Element $t(String text) {
-    return new StandaloneElement(new ChildElementContext(this), By.xpath(String.format(".//*[.='%s']", text)));
+    return new StandaloneElement(new ChildElementContext(this), By.xpath(String.format(".//*[normalize-space(.)='%s']", text)));
   }
 
   public ElementList $$(String cssSelector) {
