@@ -105,10 +105,18 @@ public class Browser implements AutoCloseable {
   }
 
   public Set<Window> findNewWindows() {
-    return findNewWindows(Duration.ofSeconds(10));
+    return findNewWindows(1, Duration.ofSeconds(5));
+  }
+
+  public Set<Window> findNewWindows(int number) {
+    return findNewWindows(number, Duration.ofSeconds(10));
   }
 
   public Set<Window> findNewWindows(Duration timeOut) {
+    return findNewWindows(1, timeOut);
+  }
+
+  public Set<Window> findNewWindows(int number, Duration timeOut) {
     Set<Window> knownWindows = new HashSet<>(windows.values());
     return new FluentWait<>(driver)
       .withTimeout(timeOut)
@@ -118,7 +126,7 @@ public class Browser implements AutoCloseable {
         Set<Window> result = windows.values().stream()
           .filter(h -> !knownWindows.contains(h))
           .collect(Collectors.toSet());
-        return result.size() > 0 ? result : null;
+        return result.size() >= number ? result : null;
       }
     );
   }

@@ -1,4 +1,6 @@
-package ru.stqa.yasen;
+package ru.stqa.yasen.elements;
+
+import ru.stqa.yasen.Element;
 
 public class Button extends Input {
 

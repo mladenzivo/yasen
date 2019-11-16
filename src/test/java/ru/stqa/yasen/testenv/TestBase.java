@@ -3,7 +3,7 @@ package ru.stqa.yasen.testenv;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import ru.stqa.yasen.Browser;
-import ru.stqa.yasen.Expect;
+import ru.stqa.yasen.expect.Expect;
 import ru.stqa.yasen.Window;
 
 @ExtendWith(FixtureSetup.class)

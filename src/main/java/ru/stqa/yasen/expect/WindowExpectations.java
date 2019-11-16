@@ -1,6 +1,7 @@
-package ru.stqa.yasen;
+package ru.stqa.yasen.expect;
 
 import org.openqa.selenium.support.ui.FluentWait;
+import ru.stqa.yasen.Window;
 
 import java.time.Duration;
 import java.util.Objects;

@@ -1,4 +1,8 @@
-package ru.stqa.yasen;
+package ru.stqa.yasen.expect;
+
+import ru.stqa.yasen.Browser;
+import ru.stqa.yasen.Element;
+import ru.stqa.yasen.Window;
 
 import java.time.Duration;
 

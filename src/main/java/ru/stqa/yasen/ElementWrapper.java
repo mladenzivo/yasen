@@ -11,7 +11,7 @@ public abstract class ElementWrapper extends Element {
   }
 
   @Override
-  WebElement getWebElement() {
+  protected WebElement getWebElement() {
     return element.getWebElement();
   }
 

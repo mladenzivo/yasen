@@ -1,4 +1,7 @@
-package ru.stqa.yasen;
+package ru.stqa.yasen.elements;
+
+import ru.stqa.yasen.Element;
+import ru.stqa.yasen.ElementWrapper;
 
 public class Input extends ElementWrapper {
 
