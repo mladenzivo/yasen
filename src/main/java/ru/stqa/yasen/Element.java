@@ -1,7 +1,6 @@
 package ru.stqa.yasen;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -33,12 +32,14 @@ public abstract class Element {
     }
   }
 
-  public void click() {
+  public Element click() {
     new ElementCommand(this, "click", WebElement::click).run();
+    return this;
   }
 
-  public void sendKeys(CharSequence text) {
+  public Element sendKeys(CharSequence text) {
     new ElementCommandWithParameter<>(this, "sendKeys", WebElement::sendKeys, text).run();
+    return this;
   }
 
 //  public void sendKeysSlowly(String text, int delay) {
@@ -58,7 +59,33 @@ public abstract class Element {
     return new ElementInspector<>(this, "text", WebElement::getText).get();
   }
 
+  public String tagName() {
+    return new ElementInspector<>(this, "tagName", WebElement::getTagName).get();
+  }
+
   public String attribute(String name) {
     return new ElementInspectorWithParameter<>(this, "attribute", WebElement::getAttribute, name).get();
+  }
+
+  public String cssProperty(String name) {
+    return new ElementInspectorWithParameter<>(this, "cssProperty", WebElement::getCssValue, name).get();
+  }
+
+  public Point location() {
+    return new ElementInspector<>(this, "location", WebElement::getLocation).get();
+  }
+
+  public Dimension size() {
+    return new ElementInspector<>(this, "size", WebElement::getSize).get();
+  }
+
+  public boolean isPresent() {
+    invalidate();
+    try {
+      getWebElement();
+      return true;
+    } catch (ElementLookupTimeoutException ex) {
+      return false;
+    }
   }
 }
