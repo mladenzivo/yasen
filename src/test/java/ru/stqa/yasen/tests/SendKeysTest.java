@@ -11,6 +11,25 @@ import static org.assertj.core.api.Assertions.assertThat;
 class SendKeysTest extends TestBase {
 
   @Test
+  void canSendKeysAndClearInput() {
+    // arrange
+    String url = env.createPage("source","<form><input type='text' /><form>");
+
+    // act
+    Input input = mainWin.open(url).$("input").as(Input.class);
+    input.sendKeys("test it");
+
+    // assert
+    assertThat(input.value()).isEqualTo("test it");
+
+    // act
+    input.clear();
+
+    // assert
+    assertThat(input.value()).isEqualTo("");
+  }
+
+  @Test
   void canSendKeysToElementThatIsNotImmediatelyPresent() {
     // arrange
     String url = env.createPage("source",

@@ -9,7 +9,7 @@ import ru.stqa.trier.TimeBasedTrier;
 
 import java.util.function.Consumer;
 
-class ElementCommand implements Runnable {
+public class ElementCommand implements Runnable {
 
   private final Logger log = LoggerFactory.getLogger(ElementCommand.class);
 
@@ -17,7 +17,7 @@ class ElementCommand implements Runnable {
   private final String commandName;
   private final Consumer<WebElement> command;
 
-  ElementCommand(Element element, String commandName, Consumer<WebElement> command) {
+  public ElementCommand(Element element, String commandName, Consumer<WebElement> command) {
     this.element = element;
     this.commandName = commandName;
     this.command = command;

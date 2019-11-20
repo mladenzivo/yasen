@@ -33,10 +33,6 @@ public abstract class Element {
     }
   }
 
-  public void clear() {
-    new ElementCommand(this, "clear" ,WebElement::clear).run();
-  }
-
   public void click() {
     new ElementCommand(this, "click", WebElement::click).run();
   }
