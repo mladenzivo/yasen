@@ -54,6 +54,10 @@ public abstract class Element {
 //    actions.perform();
 //  }
 
+  public boolean isVisible() {
+    return new ElementInspector<>(this, "isVisible", WebElement::isDisplayed).get();
+  }
+
   public String text() {
     return new ElementInspector<>(this, "text", WebElement::getText).get();
   }

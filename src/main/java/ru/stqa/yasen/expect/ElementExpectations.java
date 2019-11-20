@@ -41,6 +41,16 @@ public class ElementExpectations {
     return this;
   }
 
+  public ElementExpectations becomesVisible() {
+    new FluentWait<>(element).withTimeout(duration).until(Element::isVisible);
+    return this;
+  }
+
+  public ElementExpectations becomesNotVisible() {
+    new FluentWait<>(element).withTimeout(duration).until(e -> !e.isVisible());
+    return this;
+  }
+
   public void then(Consumer<Element> consumer) {
     consumer.accept(element);
   }
