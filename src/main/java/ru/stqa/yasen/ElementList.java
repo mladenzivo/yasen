@@ -63,4 +63,16 @@ public class ElementList extends ForwardingList<ElementInList> {
   public String toString() {
     return String.format("%s.$$(%s)", context, locator);
   }
+
+  @Override
+  public int size() {
+    invalidate();
+    return super.size();
+  }
+
+  @Override
+  public boolean isEmpty() {
+    invalidate();
+    return super.isEmpty();
+  }
 }

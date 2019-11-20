@@ -2,6 +2,7 @@ package ru.stqa.yasen.expect;
 
 import ru.stqa.yasen.Browser;
 import ru.stqa.yasen.Element;
+import ru.stqa.yasen.ElementList;
 import ru.stqa.yasen.Window;
 
 import java.time.Duration;
@@ -30,5 +31,10 @@ public class Expect {
 
   public ElementExpectations that(Element element) {
     return new ElementExpectations(element, duration);
+  }
+
+  public ElementListExpectations that(ElementList elements
+  ) {
+    return new ElementListExpectations(elements, duration);
   }
 }
