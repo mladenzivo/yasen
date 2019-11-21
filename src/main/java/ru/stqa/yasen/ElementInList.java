@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import ru.stqa.trier.LimitExceededException;
 import ru.stqa.trier.TimeBasedTrier;
 
-public class ElementInList extends Element {
+public class ElementInList implements Element {
 
   private final Logger log = LoggerFactory.getLogger(ElementInList.class);
 
@@ -21,18 +21,18 @@ public class ElementInList extends Element {
   }
 
   @Override
-  void invalidate() {
+  public void invalidate() {
     element = null;
     context.invalidate();
   }
 
   @Override
-  void activate() {
+  public void activate() {
     context.activate();
   }
 
   @Override
-  WebElement getWebElement() {
+  public WebElement getWebElement() {
     if (element == null) {
       log.debug("EL '{}' is to be found", this);
       try {

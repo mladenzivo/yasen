@@ -1,30 +1,29 @@
 package ru.stqa.yasen;
 
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.WebElement;
 
 import java.lang.reflect.InvocationTargetException;
 
-public abstract class Element {
+public interface Element extends CanBeActivated, CanBeInvalidated {
 
-  abstract WebElement getWebElement();
+  WebElement getWebElement();
 
-  abstract void invalidate();
-
-  abstract void activate();
-
-  public Element $(String cssSelector) {
+  default Element $(String cssSelector) {
     return new StandaloneElement(new ChildElementContext(this), By.cssSelector(cssSelector));
   }
 
-  public Element $t(String text) {
+  default Element $t(String text) {
     return new StandaloneElement(new ChildElementContext(this), By.xpath(String.format(".//*[normalize-space(.)='%s']", text)));
   }
 
-  public ElementList $$(String cssSelector) {
+  default ElementList $$(String cssSelector) {
     return new ElementListImpl(new ChildElementContext(this), By.cssSelector(cssSelector));
   }
 
-  public <W extends ElementWrapper> W as(Class<W> cls) {
+  default <W extends ElementWrapper> W as(Class<W> cls) {
     try {
       return cls.getConstructor(Element.class).newInstance(this);
     } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
@@ -32,17 +31,17 @@ public abstract class Element {
     }
   }
 
-  public Element click() {
+  default Element click() {
     new ElementCommand(this, "click", WebElement::click).run();
     return this;
   }
 
-  public Element sendKeys(CharSequence text) {
+  default Element sendKeys(CharSequence text) {
     new ElementCommandWithParameter<>(this, "sendKeys", WebElement::sendKeys, text).run();
     return this;
   }
 
-//  public void sendKeysSlowly(String text, int delay) {
+//  default void sendKeysSlowly(String text, int delay) {
 //    WebElement element = context.findElement(locator);
 //    Actions actions = new Actions(context.browser.driver);
 //    for (char c : text.toCharArray()) {
@@ -51,39 +50,39 @@ public abstract class Element {
 //    actions.perform();
 //  }
 
-  public boolean isVisible() {
+  default boolean isVisible() {
     return new ElementInspector<>(this, "isVisible", WebElement::isDisplayed).get();
   }
 
-  public boolean isSelected() {
+  default boolean isSelected() {
     return new ElementInspector<>(this, "isSelected", WebElement::isSelected).get();
   }
 
-  public String text() {
+  default String text() {
     return new ElementInspector<>(this, "text", WebElement::getText).get();
   }
 
-  public String tagName() {
+  default String tagName() {
     return new ElementInspector<>(this, "tagName", WebElement::getTagName).get();
   }
 
-  public String attribute(String name) {
+  default String attribute(String name) {
     return new ElementInspectorWithParameter<>(this, "attribute", WebElement::getAttribute, name).get();
   }
 
-  public String cssProperty(String name) {
+  default String cssProperty(String name) {
     return new ElementInspectorWithParameter<>(this, "cssProperty", WebElement::getCssValue, name).get();
   }
 
-  public Point location() {
+  default Point location() {
     return new ElementInspector<>(this, "location", WebElement::getLocation).get();
   }
 
-  public Dimension size() {
+  default Dimension size() {
     return new ElementInspector<>(this, "size", WebElement::getSize).get();
   }
 
-  public boolean isPresent() {
+  default boolean isPresent() {
     invalidate();
     try {
       getWebElement();

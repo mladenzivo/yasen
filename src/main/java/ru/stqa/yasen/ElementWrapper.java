@@ -2,7 +2,7 @@ package ru.stqa.yasen;
 
 import org.openqa.selenium.WebElement;
 
-public abstract class ElementWrapper extends Element {
+public abstract class ElementWrapper implements Element {
 
   protected final Element element;
 
@@ -11,17 +11,17 @@ public abstract class ElementWrapper extends Element {
   }
 
   @Override
-  protected WebElement getWebElement() {
+  public WebElement getWebElement() {
     return element.getWebElement();
   }
 
   @Override
-  void invalidate() {
+  public void invalidate() {
     element.invalidate();
   }
 
   @Override
-  void activate() {
+  public void activate() {
     element.activate();
   }
 }
