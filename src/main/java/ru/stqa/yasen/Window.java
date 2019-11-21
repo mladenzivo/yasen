@@ -1,12 +1,15 @@
 package ru.stqa.yasen;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Window implements CanBeActivated {
 
@@ -29,7 +32,14 @@ public class Window implements CanBeActivated {
   }
 
   public ElementList $$(String cssSelector) {
-    return new ElementList(new TopLevelElementContext(this), By.cssSelector(cssSelector));
+    return new ElementListImpl(new TopLevelElementContext(this), By.cssSelector(cssSelector));
+  }
+
+  public Object executeScript(String script, Object... args) {
+    Object[] modifiedArgs = Stream.of(args)
+      .map(arg -> arg instanceof Element ? ((Element) arg).getWebElement() : arg)
+      .toArray();
+    return ((JavascriptExecutor) driver).executeScript(script, modifiedArgs);
   }
 
   private void execute(Runnable command) {

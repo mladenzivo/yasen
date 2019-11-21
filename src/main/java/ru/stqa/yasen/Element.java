@@ -21,7 +21,7 @@ public abstract class Element {
   }
 
   public ElementList $$(String cssSelector) {
-    return new ElementList(new ChildElementContext(this), By.cssSelector(cssSelector));
+    return new ElementListImpl(new ChildElementContext(this), By.cssSelector(cssSelector));
   }
 
   public <W extends ElementWrapper> W as(Class<W> cls) {
@@ -53,6 +53,10 @@ public abstract class Element {
 
   public boolean isVisible() {
     return new ElementInspector<>(this, "isVisible", WebElement::isDisplayed).get();
+  }
+
+  public boolean isSelected() {
+    return new ElementInspector<>(this, "isSelected", WebElement::isSelected).get();
   }
 
   public String text() {
