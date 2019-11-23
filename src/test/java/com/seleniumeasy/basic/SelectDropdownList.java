@@ -18,7 +18,7 @@ class SelectDropdownList extends SeleniumEasyTestBase {
 
   @Test
   void selectListDemo() {
-    SingleSelect select = mainWin.$("#select-demo").as(SingleSelect.class);
+    SingleSelect select = mainWin.$("#select-demo").as(SingleSelect::new);
 
     select.selectByValue("Friday");
     assertThat(select.selectedOption()).isPresent().get().extracting(Element::text).isEqualTo("Friday");
@@ -26,7 +26,7 @@ class SelectDropdownList extends SeleniumEasyTestBase {
 
   @Test
   void multiSelectListDemo() {
-    MultiSelect select = mainWin.$("#multi-select").as(MultiSelect.class);
+    MultiSelect select = mainWin.$("#multi-select").as(MultiSelect::new);
 
     select.selectByValue("Florida", "New York", "Washington");
     assertThat(select.selectedOptions().stream().map(Element::text).toArray()).containsExactly("Florida", "New York", "Washington");

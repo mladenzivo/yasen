@@ -5,6 +5,8 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public interface Element extends CanBeActivated, CanBeInvalidated {
 
@@ -16,12 +18,8 @@ public interface Element extends CanBeActivated, CanBeInvalidated {
 
   ElementList $$(String cssSelector);
 
-  default <W extends ElementWrapper> W as(Class<W> cls) {
-    try {
-      return cls.getConstructor(Element.class).newInstance(this);
-    } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-      throw new RuntimeException(e);
-    }
+  default <W extends ElementWrapper> W as(Function<Element, W> constructor) {
+    return constructor.apply(this);
   }
 
   default Element click() {

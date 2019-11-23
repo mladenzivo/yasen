@@ -19,7 +19,7 @@ class CheckboxDemo extends SeleniumEasyTestBase {
 
   @Test
   void singleCheckboxDemo() {
-    CheckBox checkbox = mainWin.$("#isAgeSelected").as(CheckBox.class);
+    CheckBox checkbox = mainWin.$("#isAgeSelected").as(CheckBox::new);
     Element txtbox = mainWin.$("#txtAge");
 
     checkbox.click();
@@ -41,12 +41,12 @@ class CheckboxDemo extends SeleniumEasyTestBase {
   @Test
   void multipleCheckboxDemo() {
     ElementList checkboxes = mainWin.$$(".cb1-element");
-    Button button = mainWin.$("#check1").as(Button.class);
+    Button button = mainWin.$("#check1").as(Button::new);
 
     button.click();
 
     checkboxes.forEach(chb ->
-      assertThat(chb.as(CheckBox.class).isChecked()).isTrue());
+      assertThat(chb.as(CheckBox::new).isChecked()).isTrue());
     expect.that(button).hasText("Uncheck All");
 
     checkboxes.get(0).click();

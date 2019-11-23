@@ -16,7 +16,7 @@ class SendKeysTest extends TestBase {
     String url = env.createPage("source","<form><input type='text' /><form>");
 
     // act
-    Input input = mainWin.open(url).$("input").as(Input.class);
+    Input input = mainWin.open(url).$("input").as(Input::new);
     input.sendKeys("test it");
 
     // assert
@@ -45,7 +45,7 @@ class SendKeysTest extends TestBase {
     input.sendKeys("test it");
 
     // assert
-    assertThat(input.as(Input.class).value()).isEqualTo("test it");
+    assertThat(input.as(Input::new).value()).isEqualTo("test it");
   }
 
   @Test
@@ -64,7 +64,7 @@ class SendKeysTest extends TestBase {
     input.sendKeys("test it");
 
     // assert
-    assertThat(input.as(Input.class).value()).isEqualTo("test it");
+    assertThat(input.as(Input::new).value()).isEqualTo("test it");
   }
 
   @Test
@@ -93,6 +93,6 @@ class SendKeysTest extends TestBase {
     input.sendKeys("test2");
 
     // assert
-    assertThat(input.as(Input.class).value()).isEqualTo("test2");
+    assertThat(input.as(Input::new).value()).isEqualTo("test2");
   }
 }
