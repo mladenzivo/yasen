@@ -8,7 +8,9 @@ import org.slf4j.LoggerFactory;
 import ru.stqa.trier.LimitExceededException;
 import ru.stqa.trier.TimeBasedTrier;
 
-class StandaloneElement implements Element {
+import java.util.List;
+
+class StandaloneElement implements Element, ElementContext {
 
   private final Logger log = LoggerFactory.getLogger(StandaloneElement.class);
 
@@ -58,6 +60,31 @@ class StandaloneElement implements Element {
       log.debug("EL '{}' has already been found in past", this);
     }
     return element;
+  }
+
+  @Override
+  public WebElement findFirstBy(By locator) {
+    return getWebElement().findElement(locator);
+  }
+
+  @Override
+  public List<WebElement> findAllBy(By locator) {
+    return getWebElement().findElements(locator);
+  }
+
+  @Override
+  public Element $(String cssSelector) {
+    return new StandaloneElement(this, By.cssSelector(cssSelector));
+  }
+
+  @Override
+  public Element $t(String text) {
+    return new StandaloneElement(this, By.xpath(String.format(".//*[normalize-space(.)='%s']", text)));
+  }
+
+  @Override
+  public ElementList $$(String cssSelector) {
+    return new ElementListImpl(this, By.cssSelector(cssSelector));
   }
 
   @Override

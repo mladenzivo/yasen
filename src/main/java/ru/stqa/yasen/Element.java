@@ -1,6 +1,5 @@
 package ru.stqa.yasen;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
@@ -11,17 +10,11 @@ public interface Element extends CanBeActivated, CanBeInvalidated {
 
   WebElement getWebElement();
 
-  default Element $(String cssSelector) {
-    return new StandaloneElement(new ChildElementContext(this), By.cssSelector(cssSelector));
-  }
+  Element $(String cssSelector);
 
-  default Element $t(String text) {
-    return new StandaloneElement(new ChildElementContext(this), By.xpath(String.format(".//*[normalize-space(.)='%s']", text)));
-  }
+  Element $t(String text);
 
-  default ElementList $$(String cssSelector) {
-    return new ElementListImpl(new ChildElementContext(this), By.cssSelector(cssSelector));
-  }
+  ElementList $$(String cssSelector);
 
   default <W extends ElementWrapper> W as(Class<W> cls) {
     try {

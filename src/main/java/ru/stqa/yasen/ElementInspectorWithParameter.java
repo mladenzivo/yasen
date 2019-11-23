@@ -9,7 +9,7 @@ import ru.stqa.trier.TimeBasedTrier;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
-class ElementInspectorWithParameter<T, R> implements Supplier<R> {
+public class ElementInspectorWithParameter<T, R> implements Supplier<R> {
 
   private final Logger log = LoggerFactory.getLogger(ElementInspectorWithParameter.class);
 

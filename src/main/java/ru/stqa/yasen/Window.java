@@ -3,14 +3,16 @@ package ru.stqa.yasen;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-public class Window implements CanBeActivated {
+public class Window implements CanBeActivated, ElementContext {
 
   final Browser browser;
   final WebDriver driver;
@@ -23,15 +25,15 @@ public class Window implements CanBeActivated {
   }
 
   public Element $(String cssSelector) {
-    return new StandaloneElement(new TopLevelElementContext(this), By.cssSelector(cssSelector));
+    return new StandaloneElement(this, By.cssSelector(cssSelector));
   }
 
   public Element $t(String text) {
-    return new StandaloneElement(new TopLevelElementContext(this), By.xpath(String.format("//*[normalize-space(.)='%s']",  text)));
+    return new StandaloneElement(this, By.xpath(String.format("//*[normalize-space(.)='%s']",  text)));
   }
 
   public ElementList $$(String cssSelector) {
-    return new ElementListImpl(new TopLevelElementContext(this), By.cssSelector(cssSelector));
+    return new ElementListImpl(this, By.cssSelector(cssSelector));
   }
 
   public Object executeScript(String script, Object... args) {
@@ -99,5 +101,20 @@ public class Window implements CanBeActivated {
 
   public String url() {
     return execute(browser.driver::getCurrentUrl);
+  }
+
+  @Override
+  public WebElement findFirstBy(By locator) {
+    return driver.findElement(locator);
+  }
+
+  @Override
+  public List<WebElement> findAllBy(By locator) {
+    return driver.findElements(locator);
+  }
+
+  @Override
+  public void invalidate() {
+    throw new UnsupportedOperationException("Window cannot be invalidated");
   }
 }

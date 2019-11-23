@@ -10,21 +10,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class ElementListImpl extends ForwardingList<ElementInList> implements ElementList {
+class ElementListImpl extends ForwardingList<ElementInList> implements ElementList, ElementListContext {
 
   private final Logger log = LoggerFactory.getLogger(ElementListImpl.class);
 
   private final ElementContext context;
   private final By locator;
 
-  private ElementListContext listContext;
   private List<ElementInList> items = new ArrayList<>();
   private boolean loaded;
 
   ElementListImpl(ElementContext context, By locator) {
     this.context = context;
     this.locator = locator;
-    this.listContext = new ElementListContext(this);
   }
 
   public void invalidate() {
@@ -49,7 +47,7 @@ public class ElementListImpl extends ForwardingList<ElementInList> implements El
       }
       if (elements.size() > toCopy) {
         for (int i = toCopy; i < elements.size(); i++) {
-          items.add(new ElementInList(listContext, elements.get(i), i));
+          items.add(new ElementInList(this, elements.get(i), i));
         }
       }
       loaded = true;
@@ -77,7 +75,13 @@ public class ElementListImpl extends ForwardingList<ElementInList> implements El
     return super.isEmpty();
   }
 
+  @Override
   public ElementList filter(Predicate<Element> predicate) {
     return new FilteredElementList(this, predicate);
+  }
+
+  @Override
+  public WebElement getWebElement(int index)  {
+    return get(index).getWebElement();
   }
 }

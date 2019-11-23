@@ -8,7 +8,7 @@ import ru.stqa.trier.TimeBasedTrier;
 
 import java.util.function.BiConsumer;
 
-class ElementCommandWithParameter<T> implements Runnable {
+public class ElementCommandWithParameter<T> implements Runnable {
 
   private final Logger log = LoggerFactory.getLogger(ElementCommandWithParameter.class);
 
