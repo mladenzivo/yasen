@@ -1,6 +1,5 @@
 package ru.stqa.yasen;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
@@ -8,9 +7,7 @@ import org.slf4j.LoggerFactory;
 import ru.stqa.trier.LimitExceededException;
 import ru.stqa.trier.TimeBasedTrier;
 
-import java.util.List;
-
-public class ElementInList implements Element, ElementContext {
+public class ElementInList extends AbstractElementImpl {
 
   private final Logger log = LoggerFactory.getLogger(ElementInList.class);
 
@@ -54,38 +51,8 @@ public class ElementInList implements Element, ElementContext {
   }
 
   @Override
-  public WebElement findFirstBy(By locator) {
-    return getWebElement().findElement(locator);
-  }
-
-  @Override
-  public List<WebElement> findAllBy(By locator) {
-    return getWebElement().findElements(locator);
-  }
-
-  @Override
   public JavascriptExecutor getJavascriptExecutor() {
     return context.getJavascriptExecutor();
-  }
-
-  @Override
-  public Element $(String cssSelector) {
-    return new StandaloneElement(this, By.cssSelector(cssSelector));
-  }
-
-  @Override
-  public Element $t(String text) {
-    return new StandaloneElement(this, By.xpath(String.format(".//*[normalize-space(.)='%s']", text)));
-  }
-
-  @Override
-  public ElementList $$(String cssSelector) {
-    return new ElementListImpl(this, By.cssSelector(cssSelector));
-  }
-
-  @Override
-  public void executeScript(String script, Object... args) {
-    getJavascriptExecutor().executeScript(script, this, args);
   }
 
   @Override
