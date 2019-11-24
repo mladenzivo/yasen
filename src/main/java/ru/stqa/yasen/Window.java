@@ -37,6 +37,7 @@ public class Window implements CanBeActivated, ElementContext {
   }
 
   public Object executeScript(String script, Object... args) {
+    activate();
     Object[] modifiedArgs = Stream.of(args)
       .map(arg -> arg instanceof Element ? ((Element) arg).getWebElement() : arg)
       .toArray();

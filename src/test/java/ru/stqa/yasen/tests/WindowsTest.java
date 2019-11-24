@@ -153,4 +153,20 @@ class WindowsTest extends TestBase {
     assertThat(browser.windows()).hasSize(2);
     assertThat(newWin).isNotEqualTo(mainWin);
   }
+
+  @Test
+  void canExecuteScriptsInMultipleWindows() {
+    // arrange
+    String url1 = env.createPage("page1", "<p>Hello, world!</p>");
+    String url2 = env.createPage("page2", "<p>Hello, world!</p>");
+
+    // act
+    mainWin.open(url1);
+    Window newWin = browser.openInNewWindow(url2);
+
+    // assert
+    assertThat(mainWin.executeScript("return window.document.title")).isEqualTo("page1");
+    assertThat(newWin.executeScript("return window.document.title")).isEqualTo("page2");
+  }
+
 }
