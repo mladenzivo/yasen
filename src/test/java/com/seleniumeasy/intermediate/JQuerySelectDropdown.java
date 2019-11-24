@@ -59,7 +59,7 @@ class JQuerySelectDropdown extends SeleniumEasyTestBase {
     Element select = mainWin.$("#country");
     Element container = mainWin.$("#select2-country-container");
 
-    mainWin.executeScript("$(arguments[0]).val(arguments[1]); $(arguments[0]).trigger('change');", select, "India");
+    select.executeScript("$(arguments[0]).val(arguments[1]); $(arguments[0]).trigger('change');", "India");
     expect.that(container).hasText("India");
   }
 

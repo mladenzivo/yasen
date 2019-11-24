@@ -1,6 +1,7 @@
 package ru.stqa.yasen;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
@@ -73,6 +74,11 @@ class StandaloneElement implements Element, ElementContext {
   }
 
   @Override
+  public JavascriptExecutor getJavascriptExecutor() {
+    return context.getJavascriptExecutor();
+  }
+
+  @Override
   public Element $(String cssSelector) {
     return new StandaloneElement(this, By.cssSelector(cssSelector));
   }
@@ -85,6 +91,11 @@ class StandaloneElement implements Element, ElementContext {
   @Override
   public ElementList $$(String cssSelector) {
     return new ElementListImpl(this, By.cssSelector(cssSelector));
+  }
+
+  @Override
+  public void executeScript(String script, Object... args) {
+    getJavascriptExecutor().executeScript(script, this, args);
   }
 
   @Override

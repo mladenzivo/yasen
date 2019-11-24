@@ -37,11 +37,7 @@ public class Window implements CanBeActivated, ElementContext {
   }
 
   public Object executeScript(String script, Object... args) {
-    activate();
-    Object[] modifiedArgs = Stream.of(args)
-      .map(arg -> arg instanceof Element ? ((Element) arg).getWebElement() : arg)
-      .toArray();
-    return ((JavascriptExecutor) driver).executeScript(script, modifiedArgs);
+    return getJavascriptExecutor().executeScript(script, args);
   }
 
   private void execute(Runnable command) {
@@ -82,6 +78,10 @@ public class Window implements CanBeActivated, ElementContext {
     browser.closeWindow(windowHandle);
   }
 
+  public void maximize() {
+    execute(() -> browser.driver.manage().window().maximize());
+  }
+
   public Window open(String url) {
     execute(browser.driver::get, url);
     return this;
@@ -112,6 +112,30 @@ public class Window implements CanBeActivated, ElementContext {
   @Override
   public List<WebElement> findAllBy(By locator) {
     return driver.findElements(locator);
+  }
+
+  @Override
+  public JavascriptExecutor getJavascriptExecutor() {
+    return new JavascriptExecutor() {
+
+      @Override
+      public Object executeScript(String script, Object... args) {
+        activate();
+        Object[] modifiedArgs = Stream.of(args)
+          .map(arg -> arg instanceof Element ? ((Element) arg).getWebElement() : arg)
+          .toArray();
+        return ((JavascriptExecutor) driver).executeScript(script, modifiedArgs);
+      }
+
+      @Override
+      public Object executeAsyncScript(String script, Object... args) {
+        activate();
+        Object[] modifiedArgs = Stream.of(args)
+          .map(arg -> arg instanceof Element ? ((Element) arg).getWebElement() : arg)
+          .toArray();
+        return ((JavascriptExecutor) driver).executeAsyncScript(script, modifiedArgs);
+      }
+    };
   }
 
   @Override

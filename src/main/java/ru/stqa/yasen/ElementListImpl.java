@@ -2,6 +2,7 @@ package ru.stqa.yasen;
 
 import com.google.common.collect.ForwardingList;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,5 +84,10 @@ class ElementListImpl extends ForwardingList<ElementInList> implements ElementLi
   @Override
   public WebElement getWebElement(int index)  {
     return get(index).getWebElement();
+  }
+
+  @Override
+  public JavascriptExecutor getJavascriptExecutor() {
+    return context.getJavascriptExecutor();
   }
 }

@@ -20,6 +20,7 @@ public class TestBase {
     browser = fixture.getBrowser();
 
     mainWin = browser.currentWindow();
+    mainWin.maximize();
     browser.windows().stream()
       .filter(w -> ! w.equals(mainWin))
       .forEach(Window::close);

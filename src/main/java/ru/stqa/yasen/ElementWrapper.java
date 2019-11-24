@@ -1,6 +1,7 @@
 package ru.stqa.yasen;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
@@ -39,6 +40,11 @@ public abstract class ElementWrapper implements Element, ElementContext {
   }
 
   @Override
+  public JavascriptExecutor getJavascriptExecutor() {
+    return ((ElementContext) element).getJavascriptExecutor();
+  }
+
+  @Override
   public Element $(String cssSelector) {
     return new StandaloneElement(this, By.cssSelector(cssSelector));
   }
@@ -51,5 +57,10 @@ public abstract class ElementWrapper implements Element, ElementContext {
   @Override
   public ElementList $$(String cssSelector) {
     return new ElementListImpl(this, By.cssSelector(cssSelector));
+  }
+
+  @Override
+  public void executeScript(String script, Object... args) {
+    element.executeScript(script, args);
   }
 }
