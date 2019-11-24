@@ -16,6 +16,8 @@ public interface Element extends CanBeActivated, CanBeInvalidated {
 
   Element $t(String text);
 
+  Element $t(String tag, String text);
+
   ElementList $$(String cssSelector);
 
   default <W extends ElementWrapper> W as(Function<Element, W> constructor) {

@@ -25,15 +25,19 @@ public class Window implements CanBeActivated, ElementContext {
   }
 
   public Element $(String cssSelector) {
-    return new StandaloneElement(this, By.cssSelector(cssSelector));
+    return new StandaloneElement(this, new SimpleFinder(By.cssSelector(cssSelector)));
   }
 
   public Element $t(String text) {
-    return new StandaloneElement(this, By.xpath(String.format("//*[normalize-space(.)='%s']",  text)));
+    return new StandaloneElement(this, new ByTextFinder(text));
+  }
+
+  public Element $t(String tag, String text) {
+    return new StandaloneElement(this, new ByTextFinder(tag, text));
   }
 
   public ElementList $$(String cssSelector) {
-    return new ElementListImpl(this, By.cssSelector(cssSelector));
+    return new ElementListImpl(this, new SimpleFinder(By.cssSelector(cssSelector)));
   }
 
   public Object executeScript(String script, Object... args) {
@@ -105,13 +109,13 @@ public class Window implements CanBeActivated, ElementContext {
   }
 
   @Override
-  public WebElement findFirstBy(By locator) {
-    return driver.findElement(locator);
+  public WebElement findFirstBy(Finder finder) {
+    return finder.findFirstIn(driver);
   }
 
   @Override
-  public List<WebElement> findAllBy(By locator) {
-    return driver.findElements(locator);
+  public List<WebElement> findAllBy(Finder finder) {
+    return finder.findAllIn(driver);
   }
 
   @Override

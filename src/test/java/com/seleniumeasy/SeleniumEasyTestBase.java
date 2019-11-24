@@ -15,8 +15,8 @@ public class SeleniumEasyTestBase extends TestBase {
 
   protected void openMenu(String... path) {
     Element menu = mainWin.$("#treemenu");
-    for (String section: path) {
-      menu.$t(section).click();
+    for (String sectionTitle: path) {
+      menu.$t("a", sectionTitle).click();
     }
   }
 }

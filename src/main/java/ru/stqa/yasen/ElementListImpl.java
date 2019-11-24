@@ -1,7 +1,6 @@
 package ru.stqa.yasen;
 
 import com.google.common.collect.ForwardingList;
-import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
@@ -16,14 +15,14 @@ class ElementListImpl extends ForwardingList<ElementInList> implements ElementLi
   private final Logger log = LoggerFactory.getLogger(ElementListImpl.class);
 
   private final ElementContext context;
-  private final By locator;
+  private final Finder finder;
 
   private List<ElementInList> items = new ArrayList<>();
   private boolean loaded;
 
-  ElementListImpl(ElementContext context, By locator) {
+  ElementListImpl(ElementContext context, Finder finder) {
     this.context = context;
-    this.locator = locator;
+    this.finder = finder;
   }
 
   public void invalidate() {
@@ -38,7 +37,7 @@ class ElementListImpl extends ForwardingList<ElementInList> implements ElementLi
   protected List<ElementInList> delegate() {
     if (! loaded) {
       log.debug("L<E> '{}' is to be found", this);
-      List<WebElement> elements = context.findAllBy(locator);
+      List<WebElement> elements = context.findAllBy(finder);
       int toCopy = Math.min(items.size(), elements.size());
       if (items.size() > toCopy) {
         items.subList(toCopy, items.size()).clear();
@@ -61,7 +60,7 @@ class ElementListImpl extends ForwardingList<ElementInList> implements ElementLi
 
   @Override
   public String toString() {
-    return String.format("%s.$$(%s)", context, locator);
+    return String.format("%s.$$(%s)", context, finder);
   }
 
   @Override

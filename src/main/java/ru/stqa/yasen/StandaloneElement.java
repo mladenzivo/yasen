@@ -1,6 +1,5 @@
 package ru.stqa.yasen;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
@@ -14,13 +13,13 @@ class StandaloneElement extends AbstractElementImpl {
   private final Logger log = LoggerFactory.getLogger(StandaloneElement.class);
 
   private final ElementContext context;
-  private final By locator;
+  private final Finder finder;
 
   private WebElement element;
 
-  StandaloneElement(ElementContext context, By locator) {
+  StandaloneElement(ElementContext context, Finder finder) {
     this.context = context;
-    this.locator = locator;
+    this.finder = finder;
   }
 
   @Override
@@ -40,7 +39,7 @@ class StandaloneElement extends AbstractElementImpl {
       try {
         element = new TimeBasedTrier<>(5000).tryTo(() -> {
           try {
-            return context.findFirstBy(locator);
+            return context.findFirstBy(finder);
           } catch (StaleElementReferenceException e) {
             log.debug("Oops! Context for '{}' has gone and should be recovered!", this);
             context.invalidate();
@@ -68,6 +67,6 @@ class StandaloneElement extends AbstractElementImpl {
 
   @Override
   public String toString() {
-    return String.format("%s.$(%s)", context, locator);
+    return String.format("%s.$(%s)", context, finder);
   }
 }

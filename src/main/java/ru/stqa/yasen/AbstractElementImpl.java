@@ -9,17 +9,22 @@ abstract class AbstractElementImpl implements Element, ElementContext {
 
   @Override
   public Element $(String cssSelector) {
-    return new StandaloneElement(this, By.cssSelector(cssSelector));
+    return new StandaloneElement(this, new SimpleFinder(By.cssSelector(cssSelector)));
   }
 
   @Override
   public Element $t(String text) {
-    return new StandaloneElement(this, By.xpath(String.format(".//*[normalize-space(.)='%s']", text)));
+    return new StandaloneElement(this, new ByTextFinder(text));
+  }
+
+  @Override
+  public Element $t(String tag, String text) {
+    return new StandaloneElement(this, new ByTextFinder(tag, text));
   }
 
   @Override
   public ElementList $$(String cssSelector) {
-    return new ElementListImpl(this, By.cssSelector(cssSelector));
+    return new ElementListImpl(this, new SimpleFinder(By.cssSelector(cssSelector)));
   }
 
   @Override
@@ -28,12 +33,12 @@ abstract class AbstractElementImpl implements Element, ElementContext {
   }
 
   @Override
-  public WebElement findFirstBy(By locator) {
-    return getWebElement().findElement(locator);
+  public WebElement findFirstBy(Finder finder) {
+    return finder.findFirstIn(getWebElement());
   }
 
   @Override
-  public List<WebElement> findAllBy(By locator) {
-    return getWebElement().findElements(locator);
+  public List<WebElement> findAllBy(Finder finder) {
+    return finder.findAllIn(getWebElement());
   }
 }
