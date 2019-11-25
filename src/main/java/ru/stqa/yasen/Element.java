@@ -85,5 +85,5 @@ public interface Element extends CanBeActivated, CanBeInvalidated {
     }
   }
 
-  void executeScript(String script, Object... args);
+  Object executeScript(String script, Object... args);
 }

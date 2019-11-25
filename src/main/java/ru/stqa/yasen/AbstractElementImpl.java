@@ -28,8 +28,8 @@ abstract class AbstractElementImpl implements Element, ElementContext {
   }
 
   @Override
-  public void executeScript(String script, Object... args) {
-    getJavascriptExecutor().executeScript(script, this, args);
+  public Object executeScript(String script, Object... args) {
+    return getJavascriptExecutor().executeScript(script, this, args);
   }
 
   @Override
