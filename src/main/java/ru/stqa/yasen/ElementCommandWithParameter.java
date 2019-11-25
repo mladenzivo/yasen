@@ -28,7 +28,7 @@ public class ElementCommandWithParameter<T> implements Runnable {
   public void run() {
     log.debug("CMD ==> '{}'.{}('{}')", element, commandName, parameter);
     try {
-      new TimeBasedTrier(5000).tryTo(() -> {
+      new TimeBasedTrier<>(5000).tryTo(() -> {
         try {
           WebElement target = element.getWebElement();
           log.debug("# '{}'.{}('{}')", element, commandName, parameter);

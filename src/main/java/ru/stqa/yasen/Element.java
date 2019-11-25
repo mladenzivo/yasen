@@ -4,9 +4,7 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public interface Element extends CanBeActivated, CanBeInvalidated {
 

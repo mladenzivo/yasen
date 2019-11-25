@@ -18,7 +18,7 @@ public class TestEnvironment {
   private Undertow server;
 
   public TestEnvironment() {
-    tfs = TemporaryFilesystem.getDefaultTmpFS().createTempDir("lenium", "tests");
+    tfs = TemporaryFilesystem.getDefaultTmpFS().createTempDir("yasen", "tests");
     port = PortProber.findFreePort();
     server = Undertow.builder()
       .addHttpListener(port, "localhost")

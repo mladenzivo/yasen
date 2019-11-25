@@ -8,9 +8,6 @@ import ru.stqa.yasen.Element;
 import ru.stqa.yasen.ElementList;
 import ru.stqa.yasen.jquery.Select2;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 class JQuerySelectDropdown extends SeleniumEasyTestBase {

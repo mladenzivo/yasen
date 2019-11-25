@@ -30,7 +30,7 @@ class ByTextFinder implements Finder {
       .stream()
       .filter(el -> Objects.equals(el.getText(), text))
       .findFirst()
-      .orElseThrow(() -> new NoSuchElementException());
+      .orElseThrow(NoSuchElementException::new);
   }
 
   @Override

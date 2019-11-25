@@ -21,9 +21,7 @@ public class ElementListExpectations {
   }
 
   public ElementListExpectations hasSize(int size) {
-    new FluentWait<>(elements).withTimeout(duration).until(l -> {
-      return l.size() == size;
-    });
+    new FluentWait<>(elements).withTimeout(duration).until(l -> l.size() == size);
     return this;
   }
 
