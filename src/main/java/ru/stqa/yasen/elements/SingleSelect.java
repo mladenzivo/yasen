@@ -2,10 +2,11 @@ package ru.stqa.yasen.elements;
 
 import ru.stqa.yasen.Element;
 import ru.stqa.yasen.ElementInList;
+import ru.stqa.yasen.ElementWrapper;
 
 import java.util.Optional;
 
-public class SingleSelect extends Input {
+public class SingleSelect extends ElementWrapper {
 
   public SingleSelect(Element element) {
     super(element);

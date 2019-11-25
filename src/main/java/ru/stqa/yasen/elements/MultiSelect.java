@@ -2,11 +2,12 @@ package ru.stqa.yasen.elements;
 
 import ru.stqa.yasen.Element;
 import ru.stqa.yasen.ElementList;
+import ru.stqa.yasen.ElementWrapper;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class MultiSelect extends Input {
+public class MultiSelect extends ElementWrapper {
 
   public MultiSelect(Element element) {
     super(element);
