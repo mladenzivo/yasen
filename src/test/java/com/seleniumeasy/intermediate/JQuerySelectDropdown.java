@@ -8,6 +8,9 @@ import ru.stqa.yasen.Element;
 import ru.stqa.yasen.ElementList;
 import ru.stqa.yasen.jquery.Select2;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class JQuerySelectDropdown extends SeleniumEasyTestBase {
@@ -62,25 +65,56 @@ class JQuerySelectDropdown extends SeleniumEasyTestBase {
     Element select = mainWin.$("#country");
     Element container = mainWin.$("#select2-country-container");
 
-    select.executeScript("$(arguments[0]).val(arguments[1]); $(arguments[0]).trigger('change');", "India");
+    select.executeScript("$(arguments[0]).val(arguments[1]).trigger('change');", "India");
     expect.that(container).hasText("India");
+  }
+
+  @Test
+  void multiSelectWithJQuery() {
+    Element select = mainWin.$(".js-example-basic-multiple");
+    ElementList selected = mainWin.$(".select2-selection--multiple").$$("li.select2-selection__choice");
+
+    select.executeScript("$(arguments[0]).val(arguments[1]).trigger('change');", "AK", "MD", "MT");
+    expect.that(selected).hasSize(3);
   }
 
   @Test
   void singleSelectWithSpecialClass() {
     Select2 select2 = mainWin.$("#country").as(Select2::new);
-    Element container = mainWin.$("#select2-country-container");
 
     assertThat(select2.allOptions()).hasSize(11);
 
-    select2.select("India");
-    expect.that(container).hasText("India");
+    select2.selectByValue("India");
     assertThat(select2.selectedOptions())
       .extracting(Select2.Option::value).containsExactly("India");
 
-    select2.select("Japan");
-    expect.that(container).hasText("Japan");
+    select2.selectByText("Japan");
     assertThat(select2.selectedOptions())
       .extracting(Select2.Option::text).containsExactly("Japan");
+  }
+
+  @Test
+  void multiSelectWithSpecialClass() {
+    Select2 select2 = mainWin.$(".js-example-basic-multiple").as(Select2::new);
+
+    assertThat(select2.allOptions()).hasSize(51);
+
+    select2.selectByValue("AK", "MD", "MT");
+    assertThat(select2.selectedOptions())
+      .extracting(Select2.Option::value).containsExactly("AK", "MD", "MT");
+    assertThat(select2.selectedOptions())
+      .extracting(Select2.Option::text).containsExactly("Alaska", "Maryland", "Montana");
+
+    select2.selectByText("California", "New York", "Florida");
+    assertThat(select2.selectedOptions())
+      .extracting(Select2.Option::value).containsExactly("CA", "FL", "NY");
+    assertThat(select2.selectedOptions())
+      .extracting(Select2.Option::text).containsExactly("California", "Florida", "New York");
+
+    Select2.Option[] k = select2.allOptions().stream()
+      .filter(opt -> opt.text().startsWith("K")).toArray(Select2.Option[]::new);
+    select2.select(k);
+    assertThat(select2.selectedOptions())
+      .extracting(Select2.Option::text).containsExactly("Kansas", "Kentucky");
   }
 }
