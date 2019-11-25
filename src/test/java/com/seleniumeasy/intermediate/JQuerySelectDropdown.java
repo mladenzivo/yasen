@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
 import ru.stqa.yasen.Element;
 import ru.stqa.yasen.ElementList;
+import ru.stqa.yasen.jquery.Select2;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class JQuerySelectDropdown extends SeleniumEasyTestBase {
 
@@ -63,4 +66,21 @@ class JQuerySelectDropdown extends SeleniumEasyTestBase {
     expect.that(container).hasText("India");
   }
 
+  @Test
+  void singleSelectWithSpecialClass() {
+    Select2 select2 = mainWin.$("#country").as(Select2::new);
+    Element container = mainWin.$("#select2-country-container");
+
+    assertThat(select2.allOptions()).hasSize(11);
+
+    select2.select("India");
+    expect.that(container).hasText("India");
+    assertThat(select2.selectedOptions())
+      .extracting(Select2.Option::value).containsExactly("India");
+
+    select2.select("Japan");
+    expect.that(container).hasText("Japan");
+    assertThat(select2.selectedOptions())
+      .extracting(Select2.Option::text).containsExactly("Japan");
+  }
 }
