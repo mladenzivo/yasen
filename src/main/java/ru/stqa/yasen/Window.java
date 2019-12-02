@@ -12,7 +12,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-public class Window implements CanBeActivated, ElementContext {
+public class Window implements ElementContext {
 
   final Browser browser;
   final WebDriver driver;
@@ -34,6 +34,10 @@ public class Window implements CanBeActivated, ElementContext {
 
   public Element $t(String tag, String text) {
     return new StandaloneElement(this, new ByTextFinder(tag, text));
+  }
+
+  public Frame $frame(String cssSelector) {
+    return new Frame(this, new SimpleFinder(By.cssSelector(cssSelector)));
   }
 
   public ElementList $$(String cssSelector) {
@@ -97,6 +101,7 @@ public class Window implements CanBeActivated, ElementContext {
 
   public void activate() {
     browser.selectWindow(this.windowHandle);
+    driver.switchTo().defaultContent();
   }
 
   @Override
@@ -121,7 +126,6 @@ public class Window implements CanBeActivated, ElementContext {
   @Override
   public JavascriptExecutor getJavascriptExecutor() {
     return new JavascriptExecutor() {
-
       @Override
       public Object executeScript(String script, Object... args) {
         activate();
