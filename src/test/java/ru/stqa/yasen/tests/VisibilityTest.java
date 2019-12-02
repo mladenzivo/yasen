@@ -5,7 +5,7 @@ import ru.stqa.yasen.testenv.TestBase;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class VisibililtyTest extends TestBase {
+class VisibilityTest extends TestBase {
 
   @Test
   void invisibleElementIsInvisible() {
