@@ -8,8 +8,8 @@ import java.util.function.Consumer;
 
 public class BrowserExpectations {
 
-  private Browser browser;
-  private Duration duration;
+  private final Browser browser;
+  private final Duration duration;
 
   BrowserExpectations(Browser browser, Duration duration) {
     this.browser = browser;

@@ -9,8 +9,8 @@ import java.util.function.Consumer;
 
 public class ElementExpectations {
 
-  private Element element;
-  private Duration duration;
+  private final Element element;
+  private final Duration duration;
 
   ElementExpectations(Element element, Duration duration) {
     this.element = element;

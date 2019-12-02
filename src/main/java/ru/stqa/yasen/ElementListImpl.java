@@ -17,7 +17,7 @@ class ElementListImpl extends ForwardingList<ElementInList> implements ElementLi
   private final ElementContext context;
   private final Finder finder;
 
-  private List<ElementInList> items = new ArrayList<>();
+  private final List<ElementInList> items = new ArrayList<>();
   private boolean loaded;
 
   ElementListImpl(ElementContext context, Finder finder) {

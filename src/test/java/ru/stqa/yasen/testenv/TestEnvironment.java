@@ -13,9 +13,9 @@ import java.util.concurrent.TimeUnit;
 
 public class TestEnvironment {
 
-  private File tfs;
-  private int port;
-  private Undertow server;
+  private final File tfs;
+  private final int port;
+  private final Undertow server;
 
   public TestEnvironment() {
     tfs = TemporaryFilesystem.getDefaultTmpFS().createTempDir("yasen", "tests");

@@ -9,8 +9,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Fixture implements ExtensionContext.Store.CloseableResource {
 
-  private Map<Thread, TestEnvironment> envs = new ConcurrentHashMap<>();
-  private Map<Thread, Browser> drivers = new ConcurrentHashMap<>();
+  private final Map<Thread, TestEnvironment> envs = new ConcurrentHashMap<>();
+  private final Map<Thread, Browser> drivers = new ConcurrentHashMap<>();
 
   TestEnvironment getTestEnv() {
     return envs.computeIfAbsent(Thread.currentThread(), (t) -> new TestEnvironment());

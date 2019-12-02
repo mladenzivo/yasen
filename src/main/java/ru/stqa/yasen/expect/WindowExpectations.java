@@ -9,8 +9,8 @@ import java.util.function.Consumer;
 
 public class WindowExpectations {
 
-  private Window window;
-  private Duration duration;
+  private final Window window;
+  private final Duration duration;
 
   WindowExpectations(Window window, Duration duration) {
     this.window = window;

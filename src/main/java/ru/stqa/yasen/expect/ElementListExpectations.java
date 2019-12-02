@@ -8,8 +8,8 @@ import java.util.function.Consumer;
 
 public class ElementListExpectations {
 
-  private ElementList elements;
-  private Duration duration;
+  private final ElementList elements;
+  private final Duration duration;
 
   ElementListExpectations(ElementList elements, Duration duration) {
     this.elements = elements;

@@ -11,7 +11,7 @@ public class Expect {
 
   private static final Duration DEFAULT_WAIT_TIME = Duration.ofSeconds(5);
 
-  private Duration duration;
+  private final Duration duration;
 
   public Expect() {
     this(DEFAULT_WAIT_TIME);

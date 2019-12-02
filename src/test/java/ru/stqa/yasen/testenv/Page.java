@@ -7,7 +7,7 @@ import java.io.UncheckedIOException;
 public class Page {
 
   private final File pageFile;
-  private int port;
+  private final int port;
 
   Page(File tfs, int port) {
     this.port = port;

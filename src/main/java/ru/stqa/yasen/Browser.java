@@ -22,9 +22,10 @@ public class Browser implements AutoCloseable {
 
   final WebDriver driver;
 
-  private String currentWindowHandle;
   private final Map<String, Window> windows = new HashMap<>();
-  private Stack<String> windowStack = new Stack<>();
+  private final Stack<String> windowStack = new Stack<>();
+
+  private String currentWindowHandle;
 
   public Browser(WebDriver driver) {
     this.driver = driver;
