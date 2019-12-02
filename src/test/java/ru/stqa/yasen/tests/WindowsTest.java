@@ -2,6 +2,7 @@ package ru.stqa.yasen.tests;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ru.stqa.yasen.Element;
 import ru.stqa.yasen.Window;
 import ru.stqa.yasen.testenv.TestBase;
 
@@ -169,4 +170,22 @@ class WindowsTest extends TestBase {
     assertThat(newWin.executeScript("return window.document.title")).isEqualTo("page2");
   }
 
+  @Test
+  void canUseElementsInMultipleWindows() {
+    // arrange
+    String url1 = env.createPage("page1", "<p>Hello, world 1!</p>");
+    String url2 = env.createPage("page2", "<p>Hello, world 2!</p>");
+
+    // act
+    mainWin.open(url1);
+    Window newWin = browser.openInNewWindow(url2);
+    Element p1 = mainWin.$("p");
+    Element p2 = newWin.$("p");
+
+    // assert
+    assertThat(p1.text()).isEqualTo("Hello, world 1!");
+    assertThat(p2.text()).isEqualTo("Hello, world 2!");
+    assertThat(mainWin.$("p").text()).isEqualTo("Hello, world 1!");
+    assertThat(newWin.$("p").text()).isEqualTo("Hello, world 2!");
+  }
 }

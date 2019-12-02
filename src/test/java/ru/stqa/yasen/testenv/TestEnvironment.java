@@ -28,15 +28,31 @@ public class TestEnvironment {
     PortProber.waitForPortUp(port, 5, TimeUnit.SECONDS);
   }
 
+  public Page allocatePage() {
+    return new Page(tfs, port);
+  }
+
   public String createPage(String body) {
-    return createPage("", "", body);
+    return createPage(allocatePage(), "", "", body);
+  }
+
+  public String createPage(Page page, String body) {
+    return createPage(page, "", "", body);
   }
 
   public String createPage(String title, String body) {
-    return createPage(title, "", body);
+    return createPage(allocatePage(), title, "", body);
+  }
+
+  public String createPage(Page page, String title, String body) {
+    return createPage(page, title, "", body);
   }
 
   public String createPage(String title, String script, String body) {
+    return createPage(allocatePage(), title, script, body);
+  }
+
+  public String createPage(Page page, String title, String script, String body) {
     String html = String.format("<html><head><title>%s</title>"
       + "<script src=\"https://code.jquery.com/jquery-3.4.1.slim.min.js\" "
       + "integrity=\"sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=\" crossorigin=\"anonymous\"></script>"
@@ -44,9 +60,8 @@ public class TestEnvironment {
       + "</head><body>%s</body></html>",
       title, script, body);
     try {
-      File pageFile = File.createTempFile("page", ".html", tfs);
-      Files.write(pageFile.toPath(), html.getBytes());
-      return String.format("http://localhost:%s/%s", port, pageFile.getName());
+      Files.write(page.file().toPath(), html.getBytes());
+      return page.url();
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
