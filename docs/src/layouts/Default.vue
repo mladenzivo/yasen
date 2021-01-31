@@ -11,7 +11,7 @@
       </nav>
     </header>
     <div class="content container">
-      <slot/>
+      <slot />
     </div>
   </div>
 </template>
@@ -28,8 +28,7 @@ export default Vue.extend({
   },
 
   data: function () {
-    return {
-    }
+    return {}
   }
 })
 </script>

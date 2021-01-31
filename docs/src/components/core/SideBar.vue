@@ -9,8 +9,17 @@
       </div>
 
       <nav class="sidebar-nav">
-        <g-link class="sidebar-nav-item" v-for="item in menu" :key="item.href" :to="item.href">{{ item.title }}</g-link>
-        <a class="sidebar-nav-item" :href="$static.metadata.githubRepo">View on GitHub</a>
+        <g-link
+          class="sidebar-nav-item"
+          v-for="item in menu"
+          :key="item.href"
+          :to="item.href"
+        >
+          {{ item.title }}
+        </g-link>
+        <a class="sidebar-nav-item" :href="$static.metadata.githubRepo">
+          View on GitHub
+        </a>
       </nav>
 
       <p>&copy; {{ new Date().getFullYear() }}. All rights reserved.</p>
@@ -25,9 +34,8 @@ export default Vue.extend({
   data: function () {
     return {
       menu: [
-        { title: 'Getting Started', href: '/start' },
-        { title: 'User Guide', href: '/docs', submenu: [] },
-        { title: 'News / Blog', href: '/blog' }
+        { title: 'Getting Started', href: '/' },
+        { title: 'User Guide', href: '/docs', submenu: [] }
       ]
     }
   }
