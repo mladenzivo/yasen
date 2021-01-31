@@ -16,19 +16,22 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue'
+import SideBar from '../components/core/SideBar'
+
+export default Vue.extend({
   name: 'App',
 
   components: {
-    SideBar: () => import('@/components/core/SideBar')
+    SideBar
   },
 
   data: function () {
     return {
     }
   }
-}
+})
 </script>
 
 <static-query>
