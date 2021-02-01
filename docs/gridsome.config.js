@@ -13,18 +13,17 @@ module.exports = {
         baseDir: './content/pages',
         path: '*.md'
       }
-    },
-    {
-      use: '@gridsome/source-filesystem',
-      options: {
-        typeName: 'TextSubPage',
-        baseDir: './content/pages',
-        path: '*/**/*.md'
-      }
     }
   ],
+  transformers: {
+    remark: {
+      plugins: [
+        '@gridsome/remark-prismjs'
+      ]
+    }
+  },
   templates: {
-    TextPage: '/:path',
-    TextSubPage: '/:fileInfo__directory/:fileInfo__name'
+    TextPage: '/:path'
+//    TextSubPage: '/:fileInfo__directory/:fileInfo__name'
   }
 }
